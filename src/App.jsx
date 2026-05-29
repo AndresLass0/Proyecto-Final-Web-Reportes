@@ -9,9 +9,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 //Pages
 import Home from './Pages/Home/Home';
-
-//Componentes
-
+import UsuarioVista from './Pages/UsuarioVista/UsuarioVista';
+import AdministradorVista from './Pages/AdministradorVista/AdministradorVista';
 
 function App() {
 
@@ -20,6 +19,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/UsuarioVista" element={<UsuarioVista />} />
+          <Route path="/AdministradorVista" element={<AdministradorVista />} />
         </Routes>
       </Router>
     </>

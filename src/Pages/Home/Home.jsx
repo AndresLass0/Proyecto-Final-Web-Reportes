@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
 
+
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from '../../FireBase/config';
+
+import { useNavigate } from "react-router-dom";
+
+//Pages
+import AdministradorVista from '../AdministradorVista/AdministradorVista';
+import UsuarioVista from '../UsuarioVista/UsuarioVista';
+
 const Home = () => {
+
+    const navigate = useNavigate();
 
     const [Correo, setCorreo] = useState(null);
     const [Password, setPassword] = useState(null);
 
     async function peticion() {
+
 
         let isAdmin = false;
         let isUser = false;
@@ -47,11 +60,13 @@ const Home = () => {
         }
 
         if (isAdmin) {
-            alert("Bienvenido admin");
+            navigate("/AdministradorVista");
+            return;
         }
 
         if (isUser) {
-            alert("Bienvenido usuario");
+            navigate("/UsuarioVista");
+            return;
         }
 
     }
