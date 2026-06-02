@@ -497,14 +497,32 @@ export default function AdministradorVista() {
             </Box>
           ) : (
             <List dense sx={{ py: 0 }}>
-              {incidentesPendientes.slice(0, 10).map((inc, i) => (
-                <ListItem key={inc.id} divider={i < incidentesPendientes.length - 1} sx={{ borderColor: "rgba(0,0,0,0.05)", py: 1.5 }}>
-                  <ListItemText
-                    primary={<Typography variant="body2" fontWeight="bold" color="#222222" noWrap>{inc.tipo}</Typography>}
-                    secondary={<Typography variant="caption" color="#666666">{inc.usuarioNombre} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}</Typography>}
-                  />
-                </ListItem>
-              ))}
+              {incidentesPendientes.slice(0, 10).map((inc, i) => {
+                const fecha = inc.fechaCreacion?.toDate ? inc.fechaCreacion.toDate() : (inc.fechaCreacion ? new Date(inc.fechaCreacion) : null);
+                const diffHoras = fecha ? (new Date() - fecha) / (1000 * 60 * 60) : 0;
+                // Si tiene menos de 2 horas es considerado "Nuevo", si no es "Recuerdo"
+                const esNuevo = !fecha || diffHoras < 2;
+
+                return (
+                  <ListItem key={inc.id} divider={i < incidentesPendientes.length - 1} sx={{ borderColor: "rgba(0,0,0,0.05)", py: 1.5 }}>
+                    <ListItemText
+                      primary={
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: "space-between" }}>
+                          <Typography variant="body2" fontWeight="bold" color="#222222" noWrap sx={{ maxWidth: 170 }}>
+                            {inc.tipo}
+                          </Typography>
+                          {esNuevo ? (
+                            <Chip label="Nuevo" size="small" sx={{ bgcolor: "#e8f5e9", color: "#0B750E", fontWeight: "bold", fontSize: "0.65rem", height: 18 }} />
+                          ) : (
+                            <Chip label="Es recuerdo" size="small" sx={{ bgcolor: "#fde8e8", color: "#E81312", fontWeight: "bold", fontSize: "0.65rem", height: 18 }} />
+                          )}
+                        </Box>
+                      }
+                      secondary={<Typography variant="caption" color="#666666">{inc.usuarioNombre} · {fecha ? fecha.toLocaleDateString("es-CO") : "Reciente"}</Typography>}
+                    />
+                  </ListItem>
+                );
+              })}
               {incidentesPendientes.length > 10 && (
                 <ListItem sx={{ py: 1, textAlign: "center" }}><ListItemText primary={<Typography variant="caption" color="#0B750E" fontWeight="bold">+{incidentesPendientes.length - 10} más por revisar</Typography>} /></ListItem>
               )}
