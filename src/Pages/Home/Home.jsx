@@ -33,7 +33,7 @@ export default function Home() {
   async function handleLogin(e) {
     e.preventDefault();
     if (!correo || !password) {
-      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Todos los campos son obligatorios", confirmButtonColor: "#10b981" });
+      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Todos los campos son obligatorios", confirmButtonColor: "#0B750E" });
       return;
     }
     setCargando(true);
@@ -44,7 +44,7 @@ export default function Home() {
       await Swal.fire({ icon: "success", title: "¡Bienvenido!", text: `Hola ${cred.user.displayName || correo}`, timer: 1500, showConfirmButton: false });
       navigate(rol === "administrador" ? "/admin" : "/usuario");
     } catch (err) {
-      Swal.fire({ icon: "error", title: "Error de acceso", text: "Correo o contraseña incorrectos", confirmButtonColor: "#ef4444" });
+      Swal.fire({ icon: "error", title: "Error de acceso", text: "Correo o contraseña incorrectos", confirmButtonColor: "#E81312" });
     } finally {
       setCargando(false);
     }
@@ -57,7 +57,7 @@ export default function Home() {
       navigate(rol === "administrador" ? "/admin" : "/usuario");
     } catch (err) {
       console.error(err);
-      Swal.fire({ icon: "error", title: "Error", text: "No se pudo iniciar sesión con Google", confirmButtonColor: "#ef4444" });
+      Swal.fire({ icon: "error", title: "Error", text: "No se pudo iniciar sesión con Google", confirmButtonColor: "#E81312" });
     }
   }
 
@@ -69,8 +69,8 @@ export default function Home() {
     const y = e.clientY - rect.top;
     const xc = rect.width / 2;
     const yc = rect.height / 2;
-    const rotateX = ((yc - y) / yc) * 12; // Inclinación en X
-    const rotateY = ((x - xc) / xc) * 12; // Inclinación en Y
+    const rotateX = ((yc - y) / yc) * 12; 
+    const rotateY = ((x - xc) / xc) * 12;
 
     card.style.setProperty("--mouse-x", `${x}px`);
     card.style.setProperty("--mouse-y", `${y}px`);
@@ -85,7 +85,7 @@ export default function Home() {
   };
 
   return (
-    <Box sx={{ bgcolor: "#08090d", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+    <Box className="flow-gradient-bg" sx={{ minHeight: "100vh", position: "relative", overflow: "hidden" }}>
       {/* Luces flotantes ambientales de fondo */}
       <div className="ambient-glow-1" />
       <div className="ambient-glow-2" />
@@ -101,13 +101,13 @@ export default function Home() {
         {/* Barra superior minimalista */}
         <Box className="slide-from-top" sx={{ display: "flex", width: "100%", maxWidth: 1200, justifyContent: "space-between", alignItems: "center", py: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <img src={uaOriginalLogo} alt="UA Logo" style={{ width: 44, height: "auto", filter: "drop-shadow(0 0 10px rgba(16,185,129,0.3))" }} />
+            <img src={uaOriginalLogo} alt="UA Logo" style={{ width: 44, height: "auto", filter: "drop-shadow(0 0 10px rgba(11,117,14,0.3))" }} />
             <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: "-0.03em", color: "white", fontSize: "1.1rem" }}>
               UA Incidentes
             </Typography>
           </Box>
           <Button variant="outlined" className="btn-interactive" onClick={scrollAPortal}
-            sx={{ borderColor: "rgba(255,255,255,0.15)", color: "white", borderRadius: 3, px: 3, "&:hover": { borderColor: "#10b981", bgcolor: "rgba(16,185,129,0.08)" } }}>
+            sx={{ borderColor: "rgba(255,255,255,0.15)", color: "white", borderRadius: 3, px: 3, "&:hover": { borderColor: "#0B750E", bgcolor: "rgba(11,117,14,0.08)" } }}>
             Acceder
           </Button>
         </Box>
@@ -119,7 +119,7 @@ export default function Home() {
             fontSize: { xs: "2.4rem", sm: "3.6rem", md: "4.5rem" },
             lineHeight: 1.1,
             mb: 3,
-            background: "linear-gradient(135deg, #ffffff 30%, #a7f3d0 100%)",
+            background: "linear-gradient(135deg, #ffffff 30%, #a5d6a7 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             letterSpacing: "-0.03em"
@@ -137,7 +137,7 @@ export default function Home() {
 
           <Box className="slide-up-in stagger-3" sx={{ display: "flex", gap: 2, justifyContent: "center", flexWrap: "wrap", mb: 6 }}>
             <Button variant="contained" className="btn-interactive" onClick={scrollAPortal}
-              sx={{ bgcolor: "#10b981", px: 4, py: 1.8, fontSize: "1rem", borderRadius: 3, "&:hover": { bgcolor: "#059669" }, boxShadow: "0 10px 25px rgba(16,185,129,0.4)" }}>
+              sx={{ bgcolor: "#0B750E", px: 4, py: 1.8, fontSize: "1rem", borderRadius: 3, "&:hover": { bgcolor: "#064d08" }, boxShadow: "0 10px 25px rgba(11,117,14,0.4)" }}>
               Reportar un Incidente
             </Button>
             <Button variant="outlined" className="btn-interactive" onClick={() => navigate("/register")}
@@ -151,25 +151,26 @@ export default function Home() {
             {[
               { icon: <WaterDrop sx={{ fontSize: 24, color: "#38bdf8" }} />, label: "Fugas de agua", desc: "Reporta tuberías rotas y goteras" },
               { icon: <Bolt sx={{ fontSize: 24, color: "#fbbf24" }} />, label: "Daños eléctricos", desc: "Problemas de iluminación o redes" },
-              { icon: <Construction sx={{ fontSize: 24, color: "#10b981" }} />, label: "Infraestructura", desc: "Averías en aulas y pasillos" },
+              { icon: <Construction sx={{ fontSize: 24, color: "#a5d6a7" }} />, label: "Infraestructura", desc: "Averías en aulas y pasillos" },
               { icon: <ShieldIcon sx={{ fontSize: 24, color: "#f87171" }} />, label: "Seguridad UA", desc: "Cerraduras dañadas y zonas de riesgo" },
             ].map(({ icon, label, desc }) => (
               <Box
                 key={label}
-                className="hover-card-premium glass-panel"
+                className="hover-card-premium"
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 sx={{
                   display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 1.5,
                   borderRadius: 4, p: 3, width: 220, textAlign: "left", cursor: "pointer",
-                  border: "1px solid rgba(255,255,255,0.08)", transition: "all 0.3s ease"
+                  bgcolor: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.15)", transition: "all 0.3s ease"
                 }}
               >
-                <Box sx={{ p: 1.2, bgcolor: "rgba(255,255,255,0.04)", borderRadius: 3, display: "flex" }}>
+                <Box sx={{ p: 1.2, bgcolor: "rgba(255,255,255,0.08)", borderRadius: 3, display: "flex" }}>
                   {icon}
                 </Box>
                 <Typography variant="body1" fontWeight="700" sx={{ color: "white" }}>{label}</Typography>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{desc}</Typography>
+                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.4 }}>{desc}</Typography>
               </Box>
             ))}
           </Box>
@@ -177,7 +178,7 @@ export default function Home() {
 
         {/* Indicador de scroll */}
         <Box className="slide-up-in stagger-5" sx={{ display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer", mt: 4 }} onClick={scrollAPortal}>
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.35)", letterSpacing: "0.2em", textTransform: "uppercase", mb: 0.5, fontSize: "0.7rem" }}>
+          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.45)", letterSpacing: "0.2em", textTransform: "uppercase", mb: 0.5, fontSize: "0.7rem" }}>
             Desliza para acceder
           </Typography>
           <KeyboardArrowDown sx={{ color: "rgba(255,255,255,0.4)", animation: "bounce 2s infinite" }} />
@@ -194,17 +195,17 @@ export default function Home() {
 
         <Box sx={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "center", maxWidth: 1000 }}>
           {[
-            { step: "01", icon: <TouchApp sx={{ fontSize: 32, color: "#10b981" }} />, title: "Reporta al Instante", desc: "Toma una foto del incidente, selecciona la categoría y marca las coordenadas geográficas exactas en el mapa interconectado." },
+            { step: "01", icon: <TouchApp sx={{ fontSize: 32, color: "#a5d6a7" }} />, title: "Reporta al Instante", desc: "Toma una foto del incidente, selecciona la categoría y marca las coordenadas geográficas exactas en el mapa interconectado." },
             { step: "02", icon: <Speed sx={{ fontSize: 32, color: "#fbbf24" }} />, title: "Gestión Automatizada", desc: "El sistema alerta a los administradores institucionales en tiempo real para evaluar, catalogar e iniciar la reparación del problema." },
             { step: "03", icon: <DoneAll sx={{ fontSize: 32, color: "#38bdf8" }} />, title: "Resolución Visible", desc: "Recibe actualizaciones continuas de estado. Monitorea el historial de estados hasta que el campus quede 100% restablecido." },
           ].map(({ step, icon, title, desc }) => (
-            <Box key={step} sx={{ flex: 1, minWidth: 280, maxWidth: 320, p: 4, bgcolor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 5, position: "relative" }}>
-              <Typography variant="h1" sx={{ position: "absolute", top: -20, right: 20, fontSize: "4.5rem", fontWeight: 900, color: "rgba(16,185,129,0.06)", userSelect: "none" }}>{step}</Typography>
+            <Box key={step} sx={{ flex: 1, minWidth: 280, maxWidth: 320, p: 4, bgcolor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 5, position: "relative" }}>
+              <Typography variant="h1" sx={{ position: "absolute", top: -20, right: 20, fontSize: "4.5rem", fontWeight: 900, color: "rgba(255,255,255,0.04)", userSelect: "none" }}>{step}</Typography>
               <Box sx={{ mb: 2, display: "flex", alignItems: "center" }}>
                 {icon}
               </Box>
               <Typography variant="h6" fontWeight="bold" sx={{ color: "white", mb: 1.5 }}>{title}</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{desc}</Typography>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>{desc}</Typography>
             </Box>
           ))}
         </Box>
@@ -215,48 +216,51 @@ export default function Home() {
           ========================================== */}
       <Box ref={portalRef} sx={{
         minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-        px: 2, py: 8, position: "relative", zIndex: 1, borderTop: "1px solid rgba(255,255,255,0.04)",
-        background: "radial-gradient(circle at center, rgba(16,185,129,0.03) 0%, transparent 70%)"
+        px: 2, py: 8, position: "relative", zIndex: 1, borderTop: "1px solid rgba(255,255,255,0.15)",
+        background: "radial-gradient(circle at center, rgba(11,117,14,0.05) 0%, transparent 70%)"
       }}>
         <Paper
           className="glass-panel"
           elevation={0}
           sx={{
             width: "100%", maxWidth: 430, p: { xs: 4, sm: 5 }, borderRadius: 6,
-            border: "1px solid rgba(255,255,255,0.1) !important",
-            background: "rgba(10, 11, 16, 0.72) !important",
-            boxShadow: "0 30px 70px rgba(0,0,0,0.55) !important"
+            background: "rgba(255, 255, 255, 0.88) !important",
+            border: "1px solid rgba(255, 255, 255, 0.45) !important",
+            color: "#222222 !important",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.15) !important"
           }}
         >
           <Box sx={{ textAlign: "center", mb: 4 }}>
-            <Box sx={{ mb: 2, display: "inline-flex", p: 1.5, bgcolor: "rgba(16,185,129,0.08)", borderRadius: "20px" }}>
-              <img src={uaisoLogo} alt="UA Logo" style={{ width: 80, height: "auto" }} />
+            <Box sx={{ mb: 2, display: "inline-flex", p: 1.5, bgcolor: "rgba(11,117,14,0.08)", borderRadius: "20px" }}>
+              <img src={uaOriginalLogo} alt="UA Logo" style={{ width: 80, height: "auto" }} />
             </Box>
-            <Typography variant="h5" fontWeight="bold" sx={{ color: "white", letterSpacing: "-0.01em" }}>Iniciar Sesión</Typography>
-            <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mt: 0.5 }}>Ingresa con tu cuenta universitaria institucional</Typography>
+            <Typography variant="h5" fontWeight="bold" sx={{ color: "#222222", letterSpacing: "-0.01em" }}>Iniciar Sesión</Typography>
+            <Typography variant="body2" sx={{ color: "#666666", mt: 0.5 }}>Ingresa con tu cuenta universitaria institucional</Typography>
           </Box>
 
           <Box component="form" onSubmit={handleLogin} sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
             <TextField
               label="Correo electrónico" type="email" value={correo}
               onChange={e => setCorreo(e.target.value)} fullWidth
-              InputProps={{ startAdornment: <InputAdornment position="start"><EmailOutlined sx={{ color: "#10b981" }} /></InputAdornment> }}
+              InputProps={{ startAdornment: <InputAdornment position="start"><EmailOutlined sx={{ color: "#0B750E" }} /></InputAdornment> }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "rgba(255,255,255,0.1)" },
-                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.25)" },
-                  "&.Mui-focused fieldset": { borderColor: "#10b981" },
-                }
+                  color: "#222222",
+                  "& fieldset": { borderColor: "rgba(0,0,0,0.15)" },
+                  "&:hover fieldset": { borderColor: "rgba(0,0,0,0.3)" },
+                  "&.Mui-focused fieldset": { borderColor: "#0B750E" },
+                },
+                "& .MuiInputLabel-root": { color: "#666666" }
               }}
             />
             <TextField
               label="Contraseña" type={mostrarPass ? "text" : "password"} value={password}
               onChange={e => setPassword(e.target.value)} fullWidth
               InputProps={{
-                startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#10b981" }} /></InputAdornment>,
+                startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#0B750E" }} /></InputAdornment>,
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => setMostrarPass(!mostrarPass)} size="small" sx={{ color: "rgba(255,255,255,0.4)" }}>
+                    <IconButton onClick={() => setMostrarPass(!mostrarPass)} size="small" sx={{ color: "rgba(0,0,0,0.4)" }}>
                       {mostrarPass ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -264,20 +268,22 @@ export default function Home() {
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "rgba(255,255,255,0.1)" },
-                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.25)" },
-                  "&.Mui-focused fieldset": { borderColor: "#10b981" },
-                }
+                  color: "#222222",
+                  "& fieldset": { borderColor: "rgba(0,0,0,0.15)" },
+                  "&:hover fieldset": { borderColor: "rgba(0,0,0,0.3)" },
+                  "&.Mui-focused fieldset": { borderColor: "#0B750E" },
+                },
+                "& .MuiInputLabel-root": { color: "#666666" }
               }}
             />
             <Button type="submit" variant="contained" fullWidth disabled={cargando} className="btn-interactive"
-              sx={{ bgcolor: "#10b981", py: 1.6, fontSize: "1rem", fontWeight: "bold", "&:hover": { bgcolor: "#059669" }, borderRadius: 3, boxShadow: "0 8px 24px rgba(16, 185, 129, 0.3)" }}>
+              sx={{ bgcolor: "#0B750E", py: 1.6, fontSize: "1rem", fontWeight: "bold", "&:hover": { bgcolor: "#064d08" }, borderRadius: 3, boxShadow: "0 8px 24px rgba(11, 117, 14, 0.3)", color: "white" }}>
               {cargando ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Ingresar"}
             </Button>
           </Box>
 
-          <Divider sx={{ my: 3.5, "&::before, &::after": { borderColor: "rgba(255,255,255,0.08)" } }}>
-            <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.3)" }}>o continuar con</Typography>
+          <Divider sx={{ my: 3.5, "&::before, &::after": { borderColor: "rgba(0,0,0,0.1)" } }}>
+            <Typography variant="caption" sx={{ color: "rgba(0,0,0,0.4)" }}>o continuar con</Typography>
           </Divider>
 
           <Button
@@ -291,16 +297,16 @@ export default function Home() {
               </svg>
             }
             sx={{
-              borderColor: "rgba(255,255,255,0.12)", color: "white", borderRadius: 3, py: 1.4,
-              "&:hover": { borderColor: "rgba(255,255,255,0.3)", bgcolor: "rgba(255,255,255,0.03)" }
+              borderColor: "rgba(0,0,0,0.15)", color: "#444444", borderRadius: 3, py: 1.4,
+              "&:hover": { borderColor: "rgba(0,0,0,0.3)", bgcolor: "rgba(0,0,0,0.02)" }
             }}
           >
             Google
           </Button>
 
-          <Typography variant="body2" textAlign="center" sx={{ mt: 3.5, color: "rgba(255,255,255,0.5)" }}>
+          <Typography variant="body2" textAlign="center" sx={{ mt: 3.5, color: "#666666" }}>
             ¿No tienes una cuenta?{" "}
-            <Link to="/register" style={{ color: "#10b981", fontWeight: "bold", textDecoration: "none" }}>Regístrate aquí</Link>
+            <Link to="/register" style={{ color: "#0B750E", fontWeight: "bold", textDecoration: "none" }}>Regístrate aquí</Link>
           </Typography>
         </Paper>
       </Box>

@@ -27,11 +27,11 @@ import {
 
 const ESTADOS = ["Reportado", "En proceso", "Resuelto"];
 const ESTADO_CONFIG = {
-  "Reportado":  { color: "#ef4444", bg: "rgba(239, 68, 68, 0.12)" },
-  "En proceso": { color: "#f59e0b", bg: "rgba(245, 158, 11, 0.12)" },
-  "Resuelto":   { color: "#10b981", bg: "rgba(16, 185, 129, 0.12)" },
+  "Reportado":  { color: "#E81312", bg: "#fde8e8" },
+  "En proceso": { color: "#E47113", bg: "#fef3e2" },
+  "Resuelto":   { color: "#0B750E", bg: "#e8f5e9" },
 };
-const COLORES = ["#ef4444", "#f59e0b", "#10b981", "#0284c7", "#fbbf24", "#06b6d4", "#8b5cf6"];
+const COLORES = ["#E81312", "#E47113", "#0B750E", "#005A7E", "#EDB02E", "#169586", "#704595"];
 
 // Componente tarjeta individual o grupo apilado
 function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambiarEstado, onVerDetalle, onDesagrupar }) {
@@ -72,8 +72,8 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
           <Box key={i} sx={{
             position: "absolute", top: `${(i + 1) * 6}px`, left: `${(i + 1) * 4}px`,
             right: `-${(i + 1) * 4}px`,
-            height: 80, bgcolor: "rgba(18, 22, 33, 0.4)",
-            border: `1px solid rgba(255, 255, 255, 0.05)`,
+            height: 80, bgcolor: "rgba(255,255,255,0.03)",
+            border: `1px solid ${cfg.color}33`,
             borderLeft: `4px solid ${cfg.color}66`,
             borderRadius: 3, opacity: 0.6 - i * 0.15,
             zIndex: 3 - i,
@@ -87,30 +87,30 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
           elevation={0}
           sx={{
             borderRadius: 4,
-            bgcolor: isSelected ? "rgba(16, 185, 129, 0.12) !important" : "rgba(18, 22, 33, 0.72)",
-            outline: isSelected ? "2px solid #10b981" : "none",
+            bgcolor: isSelected ? "rgba(11, 117, 14, 0.12) !important" : "rgba(255, 255, 255, 0.78)",
+            outline: isSelected ? "2px solid #0B750E" : "none",
             position: "relative", zIndex: 4,
-            border: "1px solid rgba(255,255,255,0.05) !important",
+            border: "1px solid rgba(255,255,255,0.45) !important",
             transition: "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)"
           }}
         >
           <CardContent sx={{ display: "flex", flexDirection: "column", p: "16px !important" }}>
             <Box sx={{ display: "flex", gap: 2, alignItems: "center", width: "100%" }}>
               <Checkbox checked={isSelected} onChange={e => { e.stopPropagation(); onSelect(); }}
-                sx={{ color: "rgba(255,255,255,0.3)", "&.Mui-checked": { color: "#10b981" } }} />
-              <Box sx={{ width: 44, height: 44, borderRadius: 2, bgcolor: cfg.color + "1a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: `1px solid ${cfg.color}33` }}>
+                sx={{ color: "rgba(0,0,0,0.3)", "&.Mui-checked": { color: "#0B750E" } }} />
+              <Box sx={{ width: 44, height: 44, borderRadius: 2, bgcolor: cfg.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <Typography fontWeight="bold" sx={{ color: cfg.color, fontSize: 16 }}>{miembros.length}</Typography>
               </Box>
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5, flexWrap: "wrap" }}>
-                  <Typography fontWeight="bold" variant="body2" sx={{ color: "white" }}>Grupo: {inc.tipo}</Typography>
+                  <Typography fontWeight="bold" variant="body2" sx={{ color: "#1c1c1f" }}>Grupo: {inc.tipo}</Typography>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <span className={`led-indicator led-${inc.estado === "En proceso" ? "orange" : inc.estado === "Resuelto" ? "green" : "red"}`}></span>
                     <Chip label={inc.estado} size="small" sx={{ bgcolor: cfg.bg, color: cfg.color, fontSize: "0.65rem", fontWeight: "bold" }} />
                   </Box>
-                  <Chip label={`${miembros.length} incidentes`} size="small" sx={{ bgcolor: "rgba(16, 185, 129, 0.08)", color: "#34d399", fontSize: "0.65rem", border: "1px solid rgba(16, 185, 129, 0.15)" }} />
+                  <Chip label={`${miembros.length} incidentes`} size="small" sx={{ bgcolor: "rgba(227,242,253,0.12)", color: "#005A7E", fontSize: "0.65rem", border: "1px solid rgba(0,90,126,0.2)" }} />
                 </Box>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)" }}>
+                <Typography variant="caption" sx={{ color: "#6e6f72" }}>
                   {miembros.map(m => m.ubicacionTexto).filter(Boolean).join(" · ")}
                 </Typography>
               </Box>
@@ -122,43 +122,43 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
                   </Button>
                 ))}
                 <Box sx={{ display: "flex", gap: 0.5, justifyContent: "space-between", mt: 0.5 }}>
-                  <Button size="small" variant="text" onClick={() => setExpanded(!expanded)} sx={{ fontSize: "0.65rem", color: "#34d399", fontWeight: "bold", minWidth: 0, px: 0.5 }}>
+                  <Button size="small" variant="text" onClick={() => setExpanded(!expanded)} sx={{ fontSize: "0.65rem", color: "#0B750E", fontWeight: "bold", minWidth: 0, px: 0.5 }}>
                     {expanded ? "Ocultar ▲" : "Ver Inc. ▼"}
                   </Button>
-                  <Button size="small" variant="text" onClick={() => onVerDetalle(inc)} sx={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.5)", minWidth: 0, px: 0.5 }}>Ver det.</Button>
+                  <Button size="small" variant="text" onClick={() => onVerDetalle(inc)} sx={{ fontSize: "0.65rem", color: "rgba(0,0,0,0.5)", minWidth: 0, px: 0.5 }}>Ver det.</Button>
                 </Box>
               </Box>
             </Box>
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <Box sx={{ mt: 2, borderTop: "1px solid rgba(255,255,255,0.06)", pt: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
-                <Typography variant="caption" sx={{ fontWeight: "bold", color: "rgba(255,255,255,0.4)", pl: 1 }}>
+              <Box sx={{ mt: 2, borderTop: "1px solid rgba(0,0,0,0.06)", pt: 1.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
+                <Typography variant="caption" sx={{ fontWeight: "bold", color: "rgba(0,0,0,0.5)", pl: 1 }}>
                   Incidentes en este grupo:
                 </Typography>
                 {miembros.map((m) => (
                   <Box key={m.id} sx={{
-                    display: "flex", gap: 2, alignItems: "center", bgcolor: "rgba(255,255,255,0.01)", p: 1.2, borderRadius: 3, border: "1px solid rgba(255,255,255,0.04)",
-                    ml: 1, mr: 1, "&:hover": { bgcolor: "rgba(255,255,255,0.03)" }
+                    display: "flex", gap: 2, alignItems: "center", bgcolor: "rgba(0,0,0,0.02)", p: 1.2, borderRadius: 3, border: "1px solid rgba(0,0,0,0.04)",
+                    ml: 1, mr: 1, "&:hover": { bgcolor: "rgba(0,0,0,0.03)" }
                   }}>
                     {m.imagenURL && (
-                      <Box sx={{ width: 48, height: 48, borderRadius: 2, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <Box sx={{ width: 48, height: 48, borderRadius: 2, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(0,0,0,0.08)" }}>
                         <img src={m.imagenURL} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </Box>
                     )}
                     <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Typography variant="caption" sx={{ fontWeight: "bold", display: "block", color: "white" }}>{m.tipo}</Typography>
-                      <Typography variant="caption" sx={{ display: "block", fontSize: "0.75rem", mb: 0.5, color: "rgba(255,255,255,0.5)" }} noWrap>{m.descripcion}</Typography>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, flexWrap: "wrap", fontSize: "0.68rem", color: "rgba(255,255,255,0.35)" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><Person sx={{ fontSize: 11, color: "#10b981" }} />{m.usuarioNombre}</Box>
+                      <Typography variant="caption" sx={{ fontWeight: "bold", display: "block", color: "#1c1c1f" }}>{m.tipo}</Typography>
+                      <Typography variant="caption" sx={{ display: "block", fontSize: "0.75rem", mb: 0.5, color: "#6e6f72" }} noWrap>{m.descripcion}</Typography>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, flexWrap: "wrap", fontSize: "0.68rem", color: "#6e6f72" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><Person sx={{ fontSize: 11, color: "#0B750E" }} />{m.usuarioNombre}</Box>
                         <span>·</span>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><LocationOn sx={{ fontSize: 11, color: "#10b981" }} />{m.ubicacionTexto}</Box>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><LocationOn sx={{ fontSize: 11, color: "#0B750E" }} />{m.ubicacionTexto}</Box>
                         <span>·</span>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><CalendarToday sx={{ fontSize: 11 }} />{m.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}</Box>
                       </Box>
                     </Box>
                     <Button size="small" variant="outlined" startIcon={<CallSplit sx={{ fontSize: 12 }} />}
                       onClick={(e) => { e.stopPropagation(); onDesagrupar(m.id, m.grupoIncidenteId); }}
-                      sx={{ fontSize: "0.6rem", py: 0.3, px: 1, borderColor: "#f59e0b", color: "#f59e0b", "&:hover": { bgcolor: "rgba(245,158,11,0.08)" } }}>
+                      sx={{ fontSize: "0.6rem", py: 0.3, px: 1, borderColor: "#E47113", color: "#E47113", "&:hover": { bgcolor: "#fef3e2" } }}>
                       Sacar
                     </Button>
                   </Box>
@@ -179,33 +179,33 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
       elevation={0}
       sx={{
         borderRadius: 4,
-        bgcolor: isSelected ? "rgba(16, 185, 129, 0.12) !important" : "rgba(18, 22, 33, 0.72)",
-        outline: isSelected ? "2px solid #10b981" : "none",
-        border: "1px solid rgba(255,255,255,0.05) !important",
+        bgcolor: isSelected ? "rgba(11, 117, 14, 0.12) !important" : "rgba(255, 255, 255, 0.78)",
+        outline: isSelected ? "2px solid #0B750E" : "none",
+        border: "1px solid rgba(255,255,255,0.45) !important",
         transition: "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)"
       }}
     >
       <CardContent sx={{ display: "flex", gap: 3, alignItems: "center", p: "16px !important" }}>
         <Checkbox checked={isSelected} onChange={e => { e.stopPropagation(); onSelect(); }}
-          sx={{ color: "rgba(255,255,255,0.3)", "&.Mui-checked": { color: "#10b981" } }} />
+          sx={{ color: "rgba(0,0,0,0.3)", "&.Mui-checked": { color: "#0B750E" } }} />
         {inc.imagenURL && (
-          <Box sx={{ width: 65, height: 65, borderRadius: 2.5, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }}>
+          <Box sx={{ width: 65, height: 65, borderRadius: 2.5, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(0,0,0,0.08)" }}>
             <img src={inc.imagenURL} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </Box>
         )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 0.5, flexWrap: "wrap" }}>
-            <Typography fontWeight="bold" variant="body2" sx={{ color: "white" }}>{inc.tipo}</Typography>
+            <Typography fontWeight="bold" variant="body2" sx={{ color: "#1c1c1f" }}>{inc.tipo}</Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <span className={`led-indicator led-${inc.estado === "En proceso" ? "orange" : inc.estado === "Resuelto" ? "green" : "red"}`}></span>
               <Chip label={inc.estado} size="small" sx={{ bgcolor: cfg.bg, color: cfg.color, fontSize: "0.65rem", fontWeight: "bold" }} />
             </Box>
           </Box>
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)", display: "block", mb: 0.5 }} noWrap>{inc.descripcion}</Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, flexWrap: "wrap", fontSize: "0.72rem", color: "rgba(255,255,255,0.35)" }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><Person sx={{ fontSize: 12, color: "#10b981" }} />{inc.usuarioNombre}</Box>
+          <Typography variant="caption" sx={{ color: "#6e6f72", display: "block", mb: 0.5 }} noWrap>{inc.descripcion}</Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, flexWrap: "wrap", fontSize: "0.72rem", color: "#6e6f72" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><Person sx={{ fontSize: 12, color: "#0B750E" }} />{inc.usuarioNombre}</Box>
             <span>·</span>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><LocationOn sx={{ fontSize: 12, color: "#10b981" }} />{inc.ubicacionTexto}</Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><LocationOn sx={{ fontSize: 12, color: "#0B750E" }} />{inc.ubicacionTexto}</Box>
             <span>·</span>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.3 }}><CalendarToday sx={{ fontSize: 11 }} />{inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}</Box>
           </Box>
@@ -217,7 +217,7 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
               → {e}
             </Button>
           ))}
-          <Button size="small" variant="text" onClick={() => onVerDetalle(inc)} sx={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.5)", mt: 0.3 }}>Ver detalle</Button>
+          <Button size="small" variant="text" onClick={() => onVerDetalle(inc)} sx={{ fontSize: "0.65rem", color: "rgba(0,0,0,0.5)", mt: 0.3 }}>Ver detalle</Button>
         </Box>
       </CardContent>
     </Card>
@@ -328,13 +328,6 @@ export default function AdministradorVista() {
             streetViewControl: false,
             fullscreenControl: false,
             gestureHandling: "cooperative",
-            styles: [
-              { elementType: "geometry", stylers: [{ color: "#1d2c4d" }] },
-              { elementType: "labels.text.fill", stylers: [{ color: "#8ec3b9" }] },
-              { elementType: "labels.text.stroke", stylers: [{ color: "#1a3646" }] },
-              { featureType: "administrative.country", elementType: "geometry.stroke", stylers: [{ color: "#4b6878" }] },
-              { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e1626" }] }
-            ]
           });
           new google.maps.Marker({
             position: pos,
@@ -450,30 +443,30 @@ export default function AdministradorVista() {
   };
 
   return (
-    <Box sx={{ bgcolor: "#08090d", minHeight: "100vh", pb: 5, position: "relative", overflow: "hidden" }}>
+    <Box className="flow-gradient-bg" sx={{ minHeight: "100vh", pb: 5, position: "relative", overflow: "hidden" }}>
       {/* Luces flotantes de fondo */}
       <div className="ambient-glow-1" />
       <div className="ambient-glow-2" />
       <div className="ambient-glow-3" />
 
       {/* AppBar */}
-      <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(10, 11, 16, 0.4)", backdropFilter: "blur(18px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
+      <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(34, 34, 34, 0.15)", backdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
         <Toolbar sx={{ maxWidth: 1200, width: "100%", mx: "auto" }}>
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 900, fontSize: { xs: "0.9rem", sm: "1.15rem" }, color: "white", display: "flex", alignItems: "center", gap: 1, letterSpacing: "-0.03em" }}>
-            <Security sx={{ color: "#10b981" }} /> Panel Administrador — UA
+            <Security sx={{ color: "white" }} /> Panel Administrador — UA Incidentes
           </Typography>
           
           {/* Campana notificaciones */}
-          <IconButton color="inherit" onClick={e => setCampanaAnchor(e.currentTarget)} sx={{ mr: 1, color: "rgba(255,255,255,0.7)", "&:hover": { color: "white" } }}>
+          <IconButton color="inherit" onClick={e => setCampanaAnchor(e.currentTarget)} sx={{ mr: 1, color: "white" }}>
             <Badge badgeContent={incidentesPendientes.length} color="error">
               <NotificationsOutlined />
             </Badge>
           </IconButton>
           
-          <Avatar sx={{ bgcolor: "#ef4444", mr: 1, width: 36, height: 36, fontSize: 14, fontWeight: "bold", border: "1px solid rgba(255,255,255,0.12)" }}>
+          <Avatar sx={{ bgcolor: "#E81312", mr: 1, width: 36, height: 36, fontSize: 14, fontWeight: "bold", border: "1px solid rgba(255,255,255,0.12)" }}>
             {(usuario?.email || "A")[0].toUpperCase()}
           </Avatar>
-          <IconButton color="inherit" onClick={cerrarSesion} sx={{ color: "rgba(255,255,255,0.7)", "&:hover": { color: "#ef4444" } }}><Logout /></IconButton>
+          <IconButton color="inherit" onClick={cerrarSesion} sx={{ color: "white" }}><Logout /></IconButton>
         </Toolbar>
       </AppBar>
 
@@ -485,35 +478,35 @@ export default function AdministradorVista() {
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
           sx: {
-            bgcolor: "rgba(18, 22, 33, 0.95)",
+            bgcolor: "rgba(255,255,255,0.95)",
             backdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+            border: "1px solid rgba(0,0,0,0.1)",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
             borderRadius: 4, width: 330
           }
         }}
       >
         <Box sx={{ maxHeight: 400, overflow: "auto" }}>
-          <Box sx={{ p: 2, bgcolor: "rgba(16, 185, 129, 0.08)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-            <Typography fontWeight="800" sx={{ display: "flex", alignItems: "center", gap: 1, color: "white", fontSize: "0.9rem" }}><NotificationsOutlined sx={{ fontSize: 18, color: "#10b981" }} /> Incidentes Pendientes ({incidentesPendientes.length})</Typography>
+          <Box sx={{ p: 2, bgcolor: "#0B750E", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
+            <Typography fontWeight="800" sx={{ display: "flex", alignItems: "center", gap: 1, color: "white", fontSize: "0.9rem" }}><NotificationsOutlined sx={{ fontSize: 18, color: "white" }} /> Incidentes Pendientes ({incidentesPendientes.length})</Typography>
           </Box>
           {incidentesPendientes.length === 0 ? (
-            <Box sx={{ p: 3, textAlign: "center" }}>
-              <CheckCircle sx={{ fontSize: 32, color: "#10b981", opacity: 0.8, mb: 1 }} />
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)" }}>¡Excelente! No hay pendientes.</Typography>
+            <Box sx={{ p: 3, textAlign: "center", color: "#666666" }}>
+              <CheckCircle sx={{ fontSize: 32, color: "#0B750E", opacity: 0.8, mb: 1 }} />
+              <Typography variant="body2">¡Excelente! No hay pendientes.</Typography>
             </Box>
           ) : (
             <List dense sx={{ py: 0 }}>
               {incidentesPendientes.slice(0, 10).map((inc, i) => (
-                <ListItem key={inc.id} divider={i < incidentesPendientes.length - 1} sx={{ borderColor: "rgba(255,255,255,0.05)", py: 1.5 }}>
+                <ListItem key={inc.id} divider={i < incidentesPendientes.length - 1} sx={{ borderColor: "rgba(0,0,0,0.05)", py: 1.5 }}>
                   <ListItemText
-                    primary={<Typography variant="body2" fontWeight="bold" color="white" noWrap>{inc.tipo}</Typography>}
-                    secondary={<Typography variant="caption" color="rgba(255,255,255,0.45)">{inc.usuarioNombre} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}</Typography>}
+                    primary={<Typography variant="body2" fontWeight="bold" color="#222222" noWrap>{inc.tipo}</Typography>}
+                    secondary={<Typography variant="caption" color="#666666">{inc.usuarioNombre} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}</Typography>}
                   />
                 </ListItem>
               ))}
               {incidentesPendientes.length > 10 && (
-                <ListItem sx={{ py: 1, textAlign: "center" }}><ListItemText primary={<Typography variant="caption" color="#10b981" fontWeight="bold">+{incidentesPendientes.length - 10} más por revisar</Typography>} /></ListItem>
+                <ListItem sx={{ py: 1, textAlign: "center" }}><ListItemText primary={<Typography variant="caption" color="#0B750E" fontWeight="bold">+{incidentesPendientes.length - 10} más por revisar</Typography>} /></ListItem>
               )}
             </List>
           )}
@@ -525,10 +518,10 @@ export default function AdministradorVista() {
         {/* Resumen Superior */}
         <Box className="slide-up-in stagger-1" sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(4, 1fr)" }, gap: 2, mb: 4, mt: 2 }}>
           {[
-            { label: "Total Reportes", value: incidentes.length, color: "#ffffff", border: "rgba(255,255,255,0.15)" },
-            { label: "Reportados", value: incidentes.filter(i => i.estado === "Reportado").length, color: "#ef4444", border: "rgba(239, 68, 68, 0.3)" },
-            { label: "En Proceso", value: incidentes.filter(i => i.estado === "En proceso").length, color: "#f59e0b", border: "rgba(245, 158, 11, 0.3)" },
-            { label: "Resueltos", value: incidentes.filter(i => i.estado === "Resuelto").length, color: "#10b981", border: "rgba(16, 185, 129, 0.3)" },
+            { label: "Total", value: incidentes.length, color: "#ffffff" },
+            { label: "Reportados", value: incidentes.filter(i => i.estado === "Reportado").length, color: "#ff8a80" },
+            { label: "En Proceso", value: incidentes.filter(i => i.estado === "En proceso").length, color: "#ffd180" },
+            { label: "Resueltos", value: incidentes.filter(i => i.estado === "Resuelto").length, color: "#b9f6ca" },
           ].map(s => (
             <Card
               key={s.label}
@@ -538,15 +531,14 @@ export default function AdministradorVista() {
               elevation={0}
               sx={{
                 borderRadius: 4, textAlign: "center", py: 1.5,
-                border: "1px solid rgba(255,255,255,0.06) !important",
-                borderTop: `2px solid ${s.border} !important`
+                border: "1px solid rgba(255,255,255,0.45) !important",
               }}
             >
               <CardContent sx={{ py: "8px !important" }}>
                 <Typography variant="h3" fontWeight="900" sx={{ color: s.color, letterSpacing: "-0.03em" }}>
                   <AnimatedCounter value={s.value} />
                 </Typography>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>{s.label}</Typography>
+                <Typography variant="caption" sx={{ color: "#000000c9", fontWeight: 600 }}>{s.label}</Typography>
               </CardContent>
             </Card>
           ))}
@@ -558,9 +550,9 @@ export default function AdministradorVista() {
           sx={{
             mb: 3.5,
             borderBottom: "1px solid rgba(255,255,255,0.08)",
-            "& .MuiTab-root": { color: "rgba(255,255,255,0.5) !important", fontWeight: "bold", fontSize: "0.95rem" },
-            "& .Mui-selected": { color: "#10b981 !important" },
-            "& .MuiTabs-indicator": { bgcolor: "#10b981", height: 3, borderRadius: "3px 3px 0 0" }
+            "& .MuiTab-root": { color: "rgba(255,255,255,0.7) !important", fontWeight: "bold", fontSize: "0.95rem" },
+            "& .Mui-selected": { color: "#b9f6ca !important" },
+            "& .MuiTabs-indicator": { bgcolor: "#b9f6ca", height: 3 }
           }}
         >
           <Tab icon={<TableRows />} label="Incidentes" iconPosition="start" />
@@ -572,39 +564,39 @@ export default function AdministradorVista() {
             {/* Controles de filtrado y agrupamiento */}
             <Box className="slide-up-in stagger-2" sx={{ display: "flex", gap: 2, mb: 3.5, flexWrap: "wrap", alignItems: "center" }}>
               <TextField
-                placeholder="Buscar por usuario, tipo, descripción..."
+                placeholder="Buscar incidente..."
                 size="small"
                 value={busqueda}
                 onChange={e => setBusqueda(e.target.value)}
                 InputProps={{ 
-                  startAdornment: <Search sx={{ mr: 1, color: "rgba(255,255,255,0.4)" }} />,
+                  startAdornment: <Search sx={{ mr: 1, color: "rgba(255,255,255,0.6)" }} />,
                   style: { color: "white" }
                 }}
                 sx={{
                   flexGrow: 1, minWidth: 200,
                   "& .MuiOutlinedInput-root": {
-                    bgcolor: "rgba(255,255,255,0.03)",
-                    "& fieldset": { borderColor: "rgba(255,255,255,0.08)" },
-                    "&:hover fieldset": { borderColor: "rgba(255,255,255,0.2)" },
-                    "&.Mui-focused fieldset": { borderColor: "#10b981" },
+                    bgcolor: "rgba(255,255,255,0.06)",
+                    "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
+                    "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                    "&.Mui-focused fieldset": { borderColor: "#0B750E" },
                     "& input": { color: "white" },
-                    "& input::placeholder": { color: "rgba(255,255,255,0.4)", opacity: 1 },
+                    "& input::placeholder": { color: "rgba(255,255,255,0.6)", opacity: 1 },
                   }
                 }}
               />
               <FormControl size="small" sx={{ 
                 minWidth: 140,
                 "& .MuiOutlinedInput-root": {
-                  bgcolor: "rgba(255,255,255,0.03)",
+                  bgcolor: "rgba(255,255,255,0.06)",
                   color: "white",
-                  "& fieldset": { borderColor: "rgba(255,255,255,0.08)" },
-                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.2)" },
-                  "&.Mui-focused fieldset": { borderColor: "#10b981" },
+                  "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
+                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                  "&.Mui-focused fieldset": { borderColor: "#0B750E" },
                 },
-                "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.4)" },
+                "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.6)" },
                 "& .MuiSelect-icon": { color: "white" }
               }}>
-                <InputLabel>Estado</InputLabel>
+                <InputLabel sx={{ color: "rgba(255,255,255,0.6)" }}>Estado</InputLabel>
                 <Select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)} label="Estado">
                   <MenuItem value="Todos">Todos</MenuItem>
                   {ESTADOS.map(e => <MenuItem key={e} value={e}>{e}</MenuItem>)}
@@ -613,16 +605,16 @@ export default function AdministradorVista() {
               <FormControl size="small" sx={{ 
                 minWidth: 140,
                 "& .MuiOutlinedInput-root": {
-                  bgcolor: "rgba(255,255,255,0.03)",
+                  bgcolor: "rgba(255,255,255,0.06)",
                   color: "white",
-                  "& fieldset": { borderColor: "rgba(255,255,255,0.08)" },
-                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.2)" },
-                  "&.Mui-focused fieldset": { borderColor: "#10b981" },
+                  "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
+                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                  "&.Mui-focused fieldset": { borderColor: "#0B750E" },
                 },
-                "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.4)" },
+                "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.6)" },
                 "& .MuiSelect-icon": { color: "white" }
               }}>
-                <InputLabel>Período</InputLabel>
+                <InputLabel sx={{ color: "rgba(255,255,255,0.6)" }}>Período</InputLabel>
                 <Select value={filtroPeriodo} onChange={e => setFiltroPeriodo(e.target.value)} label="Período">
                   <MenuItem value="todos">Todos</MenuItem>
                   <MenuItem value="7dias">Últimos 7 días</MenuItem>
@@ -633,13 +625,13 @@ export default function AdministradorVista() {
               {/* Botón inteligente agrupar/desagrupar */}
               {estadoBoton === "agrupar" && (
                 <Button variant="contained" startIcon={<MergeType />} className="btn-interactive" onClick={agruparSeleccionados}
-                  sx={{ bgcolor: "#0284c7", "&:hover": { bgcolor: "#0369a1" }, borderRadius: 3, fontWeight: "bold", boxShadow: "0 6px 15px rgba(2, 132, 199, 0.35)" }} >
+                  sx={{ bgcolor: "#005A7E", "&:hover": { bgcolor: "#003d5c" }, borderRadius: 3, fontWeight: "bold", boxShadow: "0 6px 15px rgba(0, 90, 126, 0.35)", color: "white" }} >
                   Agrupar ({seleccionados.length})
                 </Button>
               )}
               {estadoBoton === "desagrupar" && (
                 <Button variant="contained" startIcon={<CallSplit />} className="btn-interactive" onClick={desagruparGrupo}
-                  sx={{ bgcolor: "#f59e0b", "&:hover": { bgcolor: "#d97706" }, borderRadius: 3, fontWeight: "bold", boxShadow: "0 6px 15px rgba(245, 158, 11, 0.35)" }} >
+                  sx={{ bgcolor: "#E47113", "&:hover": { bgcolor: "#c05e0e" }, borderRadius: 3, fontWeight: "bold", boxShadow: "0 6px 15px rgba(228, 113, 19, 0.35)", color: "white" }} >
                   Desagrupar
                 </Button>
               )}
@@ -667,30 +659,30 @@ export default function AdministradorVista() {
         {tab === 1 && (
           <Box className="estadisticas-print slide-up-in">
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }} className="no-print">
-              <Typography variant="h6" fontWeight="bold" sx={{ color: "white" }}>Métricas y Analíticas Generales</Typography>
-              <Button variant="outlined" startIcon={<Print />} onClick={() => window.print()} sx={{ borderColor: "rgba(255,255,255,0.15)", color: "white", "&:hover": { borderColor: "#10b981", bgcolor: "rgba(16, 185, 129, 0.08)" }, borderRadius: 3 }}>
-                Imprimir Reporte
+              <Typography variant="h6" fontWeight="bold" sx={{ color: "white" }}>Estadísticas Generales</Typography>
+              <Button variant="outlined" startIcon={<Print />} onClick={() => window.print()} sx={{ borderColor: "rgba(255,255,255,0.15)", color: "white", "&:hover": { borderColor: "white", bgcolor: "rgba(255,255,255,0.05)" }, borderRadius: 3 }}>
+                Imprimir
               </Button>
             </Box>
             
             <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 4 }}>
               {/* Gráfico circular por Estado */}
-              <Card className="glass-panel" elevation={0} sx={{ borderRadius: 4, p: 3, border: "1px solid rgba(255,255,255,0.05) !important" }}>
-                <Typography fontWeight="bold" sx={{ mb: 3, color: "white" }}>Estructura por Estado</Typography>
+              <Card className="glass-panel" elevation={0} sx={{ borderRadius: 4, p: 3, border: "1px solid rgba(255,255,255,0.45) !important" }}>
+                <Typography fontWeight="bold" sx={{ mb: 3, color: "#222222" }}>Por Estado</Typography>
                 <ResponsiveContainer width="100%" height={230}>
                   <PieChart>
                     <defs>
                       <linearGradient id="pieReportado" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#f87171" />
-                        <stop offset="100%" stopColor="#ef4444" />
+                        <stop offset="0%" stopColor="#ff8a80" />
+                        <stop offset="100%" stopColor="#E81312" />
                       </linearGradient>
                       <linearGradient id="pieProceso" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#fbbf24" />
-                        <stop offset="100%" stopColor="#f59e0b" />
+                        <stop offset="0%" stopColor="#ffd180" />
+                        <stop offset="100%" stopColor="#E47113" />
                       </linearGradient>
                       <linearGradient id="pieResuelto" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#34d399" />
-                        <stop offset="100%" stopColor="#10b981" />
+                        <stop offset="0%" stopColor="#b9f6ca" />
+                        <stop offset="100%" stopColor="#0B750E" />
                       </linearGradient>
                     </defs>
                     <Pie data={datosEstado} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={85} label={({ name, value }) => value > 0 ? `${name}: ${value}` : ""}>
@@ -698,26 +690,26 @@ export default function AdministradorVista() {
                       <Cell fill="url(#pieProceso)" />
                       <Cell fill="url(#pieResuelto)" />
                     </Pie>
-                    <Tooltip contentStyle={{ backgroundColor: "rgba(18, 22, 33, 0.85)", borderColor: "rgba(255,255,255,0.08)", borderRadius: "10px", color: "white", backdropFilter: "blur(10px)" }} />
+                    <Tooltip contentStyle={{ backgroundColor: "rgba(255, 255, 255, 0.9)", borderColor: "rgba(0,0,0,0.08)", borderRadius: "10px", color: "#222222" }} />
                   </PieChart>
                 </ResponsiveContainer>
               </Card>
 
               {/* Gráfico de barras por Tipo */}
-              <Card className="glass-panel" elevation={0} sx={{ borderRadius: 4, p: 3, border: "1px solid rgba(255,255,255,0.05) !important" }}>
-                <Typography fontWeight="bold" sx={{ mb: 3, color: "white" }}>Frecuencia por Tipo</Typography>
+              <Card className="glass-panel" elevation={0} sx={{ borderRadius: 4, p: 3, border: "1px solid rgba(255,255,255,0.45) !important" }}>
+                <Typography fontWeight="bold" sx={{ mb: 3, color: "#222222" }}>Por Tipo</Typography>
                 <ResponsiveContainer width="100%" height={230}>
                   <ReBarChart data={datosTipo} layout="vertical" margin={{ left: 10 }}>
                     <defs>
                       <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#10b981" stopOpacity={0.2} />
-                        <stop offset="100%" stopColor="#10b981" stopOpacity={0.95} />
+                        <stop offset="0%" stopColor="#e8f5e9" stopOpacity={0.4} />
+                        <stop offset="100%" stopColor="#0B750E" stopOpacity={0.95} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-                    <XAxis type="number" allowDecimals={false} stroke="rgba(255,255,255,0.3)" />
-                    <YAxis type="category" dataKey="name" width={115} tick={{ fontSize: 9, fill: "rgba(255,255,255,0.6)" }} stroke="rgba(255,255,255,0.3)" />
-                    <Tooltip contentStyle={{ backgroundColor: "rgba(18, 22, 33, 0.85)", borderColor: "rgba(255,255,255,0.08)", borderRadius: "10px", color: "white", backdropFilter: "blur(10px)" }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                    <XAxis type="number" allowDecimals={false} stroke="rgba(0,0,0,0.4)" />
+                    <YAxis type="category" dataKey="name" width={115} tick={{ fontSize: 9, fill: "#222222" }} stroke="rgba(0,0,0,0.4)" />
+                    <Tooltip contentStyle={{ backgroundColor: "rgba(255, 255, 255, 0.9)", borderColor: "rgba(0,0,0,0.08)", borderRadius: "10px", color: "#222222" }} />
                     <Bar dataKey="value" fill="url(#barGradient)" radius={[0, 4, 4, 0]} />
                   </ReBarChart>
                 </ResponsiveContainer>
@@ -725,14 +717,14 @@ export default function AdministradorVista() {
             </Box>
 
             {/* Resumen detallado de porcentajes */}
-            <Card className="glass-panel" elevation={0} sx={{ borderRadius: 4, p: 3, mt: 4, border: "1px solid rgba(255,255,255,0.05) !important" }}>
-              <Typography fontWeight="bold" sx={{ mb: 3, color: "white" }}>Porcentajes de Efectividad</Typography>
+            <Card className="glass-panel" elevation={0} sx={{ borderRadius: 4, p: 3, mt: 4, border: "1px solid rgba(255,255,255,0.45) !important" }}>
+              <Typography fontWeight="bold" sx={{ mb: 3, color: "#222222" }}>Resumen</Typography>
               <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2.5 }}>
                 {datosEstado.map(d => (
-                  <Box key={d.name} sx={{ textAlign: "center", p: 2.5, borderRadius: 3, bgcolor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
+                  <Box key={d.name} sx={{ textAlign: "center", p: 2.5, borderRadius: 3, bgcolor: ESTADO_CONFIG[d.name]?.bg || "#f5f5f5", border: "1px solid rgba(0,0,0,0.04)" }}>
                     <Typography variant="h3" fontWeight="900" sx={{ color: ESTADO_CONFIG[d.name]?.color, letterSpacing: "-0.03em" }}>{d.value}</Typography>
-                    <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", fontWeight: "500" }}>{d.name}</Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.3)", display: "block", mt: 0.5 }}>
+                    <Typography variant="body2" sx={{ color: "#222222", fontWeight: "500" }}>{d.name}</Typography>
+                    <Typography variant="caption" sx={{ color: "#666666", display: "block", mt: 0.5 }}>
                       {incidentes.length > 0 ? `${Math.round((d.value / incidentes.length) * 100)}%` : "0%"} del total
                     </Typography>
                   </Box>
@@ -746,7 +738,7 @@ export default function AdministradorVista() {
       {/* Toast notificación */}
       <Snackbar open={!!toastMsg} autoHideDuration={4000} onClose={() => setToastMsg("")}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
-        <Alert onClose={() => setToastMsg("")} severity="info" sx={{ width: "100%", bgcolor: "rgba(18, 22, 33, 0.9)", border: "1px solid rgba(16, 185, 129, 0.3)", color: "white", backdropFilter: "blur(15px)" }}>{toastMsg}</Alert>
+        <Alert onClose={() => setToastMsg("")} severity="info" sx={{ width: "100%", bgcolor: "white", border: "1px solid #0B750E", color: "#222222" }}>{toastMsg}</Alert>
       </Snackbar>
 
       {/* Modal detalle */}
@@ -756,31 +748,31 @@ export default function AdministradorVista() {
           const cfg = ESTADO_CONFIG[incidenteDetalle.estado] || ESTADO_CONFIG["Reportado"];
           return (
             <>
-              <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid rgba(255,255,255,0.08)", py: 2 }}>
+              <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid rgba(0,0,0,0.08)", py: 2 }}>
                 <Box>
-                  <Typography variant="h6" fontWeight="bold" sx={{ color: "white" }}>{esGrupo ? `Grupo: ${incidenteDetalle.tipo}` : incidenteDetalle.tipo}</Typography>
+                  <Typography variant="h6" fontWeight="bold" sx={{ color: "#222222" }}>{esGrupo ? `Grupo: ${incidenteDetalle.tipo}` : incidenteDetalle.tipo}</Typography>
                   <Box sx={{ display: "flex", gap: 1, alignItems: "center", mt: 0.5 }}>
                     <span className={`led-indicator led-${incidenteDetalle.estado === "En proceso" ? "orange" : incidenteDetalle.estado === "Resuelto" ? "green" : "red"}`}></span>
                     <Chip label={incidenteDetalle.estado} size="small" sx={{ bgcolor: cfg.bg, color: cfg.color, fontWeight: "bold" }} />
-                    {esGrupo && <Chip label={`${incidenteDetalle.miembros?.length} incidentes`} size="small" sx={{ bgcolor: "rgba(16, 185, 129, 0.08)", color: "#10b981", border: "1px solid rgba(16, 185, 129, 0.15)" }} />}
+                    {esGrupo && <Chip label={`${incidenteDetalle.miembros?.length} incidentes`} size="small" sx={{ bgcolor: "#e3f2fd", color: "#005A7E" }} />}
                   </Box>
                 </Box>
-                <IconButton onClick={() => { setIncidenteDetalleId(null); setEsGrupoDetalle(false); }} sx={{ color: "rgba(255,255,255,0.5)", "&:hover": { color: "white" } }}><Close /></IconButton>
+                <IconButton onClick={() => { setIncidenteDetalleId(null); setEsGrupoDetalle(false); }} sx={{ color: "rgba(0,0,0,0.5)", "&:hover": { color: "black" } }}><Close /></IconButton>
               </DialogTitle>
               <DialogContent sx={{ pt: 3 }}>
                 {esGrupo ? (
                   <Box>
-                    <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5, color: "white" }}>Incidentes en este grupo:</Typography>
+                    <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5, color: "#222222" }}>Incidentes en este grupo:</Typography>
                     {incidenteDetalle.miembros?.map(m => (
-                      <Card key={m.id} variant="outlined" sx={{ mb: 1.5, borderRadius: 3, bgcolor: "rgba(255,255,255,0.01)", borderColor: "rgba(255,255,255,0.06)" }}>
+                      <Card key={m.id} variant="outlined" sx={{ mb: 1.5, borderRadius: 3, bgcolor: "rgba(0,0,0,0.01)", borderColor: "rgba(0,0,0,0.06)" }}>
                         <CardContent sx={{ py: "12px !important", px: "16px !important", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <Box>
-                            <Typography variant="body2" fontWeight="bold" color="white">{m.tipo}</Typography>
-                            <Typography variant="caption" color="rgba(255,255,255,0.4)">{m.usuarioNombre} · {m.ubicacionTexto}</Typography>
+                            <Typography variant="body2" fontWeight="bold" color="#222222">{m.tipo}</Typography>
+                            <Typography variant="caption" color="#666666">{m.usuarioNombre} · {m.ubicacionTexto}</Typography>
                           </Box>
                           <Button size="small" variant="outlined" startIcon={<CallSplit />}
                             onClick={() => desagruparMiembro(m.id, m.grupoIncidenteId)}
-                            sx={{ fontSize: "0.65rem", borderColor: "#f59e0b", color: "#f59e0b", "&:hover": { bgcolor: "rgba(245, 158, 11, 0.08)" } }}>
+                            sx={{ fontSize: "0.65rem", borderColor: "#E47113", color: "#E47113", "&:hover": { bgcolor: "#fef3e2" } }}>
                             Sacar
                           </Button>
                         </CardContent>
@@ -790,35 +782,35 @@ export default function AdministradorVista() {
                 ) : (
                   <>
                     {incidenteDetalle.imagenURL && (
-                      <Box sx={{ mb: 2.5, borderRadius: 4, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+                      <Box sx={{ mb: 2.5, borderRadius: 4, overflow: "hidden", border: "1px solid rgba(0,0,0,0.1)" }}>
                         <img src={incidenteDetalle.imagenURL} alt="" style={{ width: "100%", maxHeight: 260, objectFit: "cover" }} />
                       </Box>
                     )}
-                    <Typography sx={{ color: "white", mb: 2, lineHeight: 1.6 }}>{incidenteDetalle.descripcion}</Typography>
-                    <Divider sx={{ my: 2, borderColor: "rgba(255,255,255,0.08)" }} />
+                    <Typography sx={{ color: "#222222", mb: 2, lineHeight: 1.6 }}>{incidenteDetalle.descripcion}</Typography>
+                    <Divider sx={{ my: 2, borderColor: "rgba(0,0,0,0.08)" }} />
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 3 }}>
-                      <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1, color: "rgba(255,255,255,0.6)" }}><Person sx={{ fontSize: 16, color: "#10b981" }} /> {incidenteDetalle.usuarioNombre}</Typography>
-                      <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1, color: "rgba(255,255,255,0.6)" }}><LocationOn sx={{ fontSize: 16, color: "#10b981" }} /> {incidenteDetalle.ubicacionTexto}</Typography>
+                      <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1, color: "#666666" }}><Person sx={{ fontSize: 16, color: "#0B750E" }} /> {incidenteDetalle.usuarioNombre}</Typography>
+                      <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1, color: "#666666" }}><LocationOn sx={{ fontSize: 16, color: "#0B750E" }} /> {incidenteDetalle.ubicacionTexto}</Typography>
 
                       {incidenteDetalle.latitud && incidenteDetalle.longitud && (
                         <Box sx={{ mt: 1.5 }}>
-                          <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
+                          <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold", color: "#222222" }}>
                             Ubicación Georreferenciada:
                           </Typography>
-                          <div ref={mapDetailRef} style={{ width: "100%", height: "200px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.12)" }} />
-                          <Typography variant="caption" sx={{ mt: 0.5, display: "block", color: "rgba(255,255,255,0.4)" }}>
+                          <div ref={mapDetailRef} style={{ width: "100%", height: "200px", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.12)" }} />
+                          <Typography variant="caption" sx={{ mt: 0.5, display: "block", color: "#666666" }}>
                             Coordenadas: {incidenteDetalle.latitud.toFixed(6)}, {incidenteDetalle.longitud.toFixed(6)}
                           </Typography>
                         </Box>
                       )}
 
-                      <Typography variant="caption" sx={{ display: "flex", alignItems: "center", gap: 1, color: "rgba(255,255,255,0.45)", mt: 1 }}><CalendarToday sx={{ fontSize: 14 }} /> {incidenteDetalle.fechaCreacion?.toDate?.()?.toLocaleString("es-CO") || "Reciente"}</Typography>
+                      <Typography variant="caption" sx={{ display: "flex", alignItems: "center", gap: 1, color: "#666666", mt: 1 }}><CalendarToday sx={{ fontSize: 14 }} /> {incidenteDetalle.fechaCreacion?.toDate?.()?.toLocaleString("es-CO") || "Reciente"}</Typography>
                     </Box>
                   </>
                 )}
                 
-                <Box sx={{ mt: 3, p: 2.5, bgcolor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 3 }}>
-                  <Typography variant="subtitle2" fontWeight="bold" sx={{ color: "white", mb: 1.5 }}>Cambiar estado:</Typography>
+                <Box sx={{ mt: 3, p: 2.5, bgcolor: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)", borderRadius: 3 }}>
+                  <Typography variant="subtitle2" fontWeight="bold" sx={{ color: "#222222", mb: 1.5 }}>Cambiar estado:</Typography>
                   <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
                     {ESTADOS.map(e => (
                       <Button key={e} size="small"

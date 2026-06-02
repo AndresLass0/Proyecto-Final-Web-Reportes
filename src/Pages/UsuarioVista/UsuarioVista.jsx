@@ -17,9 +17,9 @@ import {
 } from "@mui/icons-material";
 
 const ESTADO_CONFIG = {
-  "Reportado":   { color: "#ef4444", bg: "rgba(239, 68, 68, 0.15)", icon: <ReportProblem sx={{ fontSize: 16, color: "#ef4444" }} /> },
-  "En proceso":  { color: "#f59e0b", bg: "rgba(245, 158, 11, 0.15)", icon: <Schedule sx={{ fontSize: 16, color: "#f59e0b" }} /> },
-  "Resuelto":    { color: "#10b981", bg: "rgba(16, 185, 129, 0.15)", icon: <CheckCircle sx={{ fontSize: 16, color: "#10b981" }} /> },
+  "Reportado":   { color: "#E81312", bg: "#fde8e8", icon: <ReportProblem sx={{ fontSize: 16, color: "#E81312" }} /> },
+  "En proceso":  { color: "#E47113", bg: "#fef3e2", icon: <Schedule sx={{ fontSize: 16, color: "#E47113" }} /> },
+  "Resuelto":    { color: "#0B750E", bg: "#e8f5e9", icon: <CheckCircle sx={{ fontSize: 16, color: "#0B750E" }} /> },
 };
 
 export default function UsuarioVista() {
@@ -45,13 +45,6 @@ export default function UsuarioVista() {
             streetViewControl: false,
             fullscreenControl: false,
             gestureHandling: "cooperative",
-            styles: [
-              { elementType: "geometry", stylers: [{ color: "#1d2c4d" }] },
-              { elementType: "labels.text.fill", stylers: [{ color: "#8ec3b9" }] },
-              { elementType: "labels.text.stroke", stylers: [{ color: "#1a3646" }] },
-              { featureType: "administrative.country", elementType: "geometry.stroke", stylers: [{ color: "#4b6878" }] },
-              { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e1626" }] }
-            ]
           });
           new google.maps.Marker({
             position: pos,
@@ -123,25 +116,25 @@ export default function UsuarioVista() {
   };
 
   return (
-    <Box sx={{ bgcolor: "#08090d", minHeight: "100vh", pb: 5, position: "relative", overflow: "hidden" }}>
+    <Box className="flow-gradient-bg" sx={{ minHeight: "100vh", pb: 5, position: "relative", overflow: "hidden" }}>
       {/* Luces flotantes ambientales de fondo */}
       <div className="ambient-glow-1" />
       <div className="ambient-glow-2" />
       <div className="ambient-glow-3" />
 
       {/* AppBar */}
-      <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(10, 11, 16, 0.4)", backdropFilter: "blur(18px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
+      <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(11, 117, 14, 0.15)", backdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
         <Toolbar sx={{ maxWidth: 1200, width: "100%", mx: "auto" }}>
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 900, color: "white", letterSpacing: "-0.03em" }}>
              UA Incidentes
           </Typography>
-          <Typography variant="body2" sx={{ mr: 2, display: { xs: "none", sm: "block" }, color: "rgba(255,255,255,0.7)" }}>
+          <Typography variant="body2" sx={{ mr: 2, display: { xs: "none", sm: "block" }, color: "rgba(255,255,255,0.8)" }}>
             {usuario?.displayName || usuario?.email}
           </Typography>
-          <Avatar sx={{ bgcolor: "#10b981", mr: 1, width: 36, height: 36, fontSize: 14, fontWeight: "bold", border: "1px solid rgba(255,255,255,0.12)" }}>
+          <Avatar sx={{ bgcolor: "#E81312", mr: 1, width: 36, height: 36, fontSize: 14, fontWeight: "bold", border: "1px solid rgba(255,255,255,0.12)" }}>
             {(usuario?.displayName || usuario?.email || "U")[0].toUpperCase()}
           </Avatar>
-          <IconButton color="inherit" onClick={cerrarSesion} title="Cerrar sesión" sx={{ color: "rgba(255,255,255,0.7)", "&:hover": { color: "#ef4444" } }}>
+          <IconButton color="inherit" onClick={cerrarSesion} title="Cerrar sesión" sx={{ color: "white", "&:hover": { color: "#ef4444" } }}>
             <Logout />
           </IconButton>
         </Toolbar>
@@ -154,7 +147,7 @@ export default function UsuarioVista() {
           <Typography variant="h4" fontWeight="800" sx={{ color: "white", letterSpacing: "-0.02em" }}>
             ¡Hola, {(usuario?.displayName || usuario?.email || "").split("@")[0]}!
           </Typography>
-          <Typography variant="body1" sx={{ color: "rgba(255,255,255,0.5)" }}>
+          <Typography variant="body1" sx={{ color: "rgba(255,255,255,0.7)" }}>
             Reporta anomalías en el campus y contribuye a mantener una universidad en excelente estado.
           </Typography>
         </Box>
@@ -162,10 +155,10 @@ export default function UsuarioVista() {
         {/* Estadísticas rápidas */}
         <Box className="slide-up-in stagger-1" sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(4, 1fr)" }, gap: 2, mb: 4 }}>
           {[
-            { label: "Total Reportes", value: conteos.total, color: "#ffffff", border: "rgba(255,255,255,0.15)" },
-            { label: "Reportados", value: conteos.reportado, color: "#ef4444", border: "rgba(239, 68, 68, 0.3)" },
-            { label: "En Proceso", value: conteos.enProceso, color: "#f59e0b", border: "rgba(245, 158, 11, 0.3)" },
-            { label: "Resueltos", value: conteos.resuelto, color: "#10b981", border: "rgba(16, 185, 129, 0.3)" },
+            { label: "Total", value: conteos.total, color: "#ffffff" },
+            { label: "Reportados", value: conteos.reportado, color: "#ff8a80" },
+            { label: "En Proceso", value: conteos.enProceso, color: "#ffd180" },
+            { label: "Resueltos", value: conteos.resuelto, color: "#b9f6ca" },
           ].map(s => (
             <Card
               key={s.label}
@@ -175,15 +168,14 @@ export default function UsuarioVista() {
               elevation={0}
               sx={{
                 borderRadius: 4, textAlign: "center", py: 1.5,
-                border: "1px solid rgba(255,255,255,0.06) !important",
-                borderTop: `2px solid ${s.border} !important`
+                border: "1px solid rgba(255,255,255,0.45) !important",
               }}
             >
               <CardContent sx={{ py: "8px !important" }}>
                 <Typography variant="h3" fontWeight="900" sx={{ color: s.color, letterSpacing: "-0.03em" }}>
                   <AnimatedCounter value={s.value} />
                 </Typography>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.45)", fontWeight: 600 }}>{s.label}</Typography>
+                <Typography variant="caption" sx={{ color: "#000000c9", fontWeight: 600 }}>{s.label}</Typography>
               </CardContent>
             </Card>
           ))}
@@ -192,39 +184,39 @@ export default function UsuarioVista() {
         {/* Barra de acciones */}
         <Box className="slide-up-in stagger-2" sx={{ display: "flex", gap: 2, mb: 4, flexWrap: "wrap", alignItems: "center" }}>
           <TextField
-            placeholder="Buscar por tipo, descripción, ubicación..."
+            placeholder="Buscar incidente..."
             size="small"
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
             InputProps={{ 
-              startAdornment: <Search sx={{ mr: 1, color: "rgba(255,255,255,0.4)" }} />,
+              startAdornment: <Search sx={{ mr: 1, color: "rgba(255,255,255,0.6)" }} />,
               style: { color: "white" }
             }}
             sx={{
               flexGrow: 1, minWidth: 260,
               "& .MuiOutlinedInput-root": {
-                bgcolor: "rgba(255,255,255,0.03)",
-                "& fieldset": { borderColor: "rgba(255,255,255,0.08)" },
-                "&:hover fieldset": { borderColor: "rgba(255,255,255,0.2)" },
-                "&.Mui-focused fieldset": { borderColor: "#10b981" },
+                bgcolor: "rgba(255,255,255,0.06)",
+                "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
+                "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                "&.Mui-focused fieldset": { borderColor: "#0B750E" },
                 "& input": { color: "white" },
-                "& input::placeholder": { color: "rgba(255,255,255,0.4)", opacity: 1 },
+                "& input::placeholder": { color: "rgba(255,255,255,0.6)", opacity: 1 },
               }
             }}
           />
           <FormControl size="small" sx={{ 
             minWidth: 150,
             "& .MuiOutlinedInput-root": {
-              bgcolor: "rgba(255,255,255,0.03)",
+              bgcolor: "rgba(255,255,255,0.06)",
               color: "white",
-              "& fieldset": { borderColor: "rgba(255,255,255,0.08)" },
-              "&:hover fieldset": { borderColor: "rgba(255,255,255,0.2)" },
-              "&.Mui-focused fieldset": { borderColor: "#10b981" },
+              "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
+              "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+              "&.Mui-focused fieldset": { borderColor: "#0B750E" },
             },
-            "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.4)" },
+            "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.6)" },
             "& .MuiSelect-icon": { color: "white" }
           }}>
-            <InputLabel>Estado</InputLabel>
+            <InputLabel sx={{ color: "rgba(255,255,255,0.6)" }}>Estado</InputLabel>
             <Select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)} label="Estado">
               <MenuItem value="Todos">Todos</MenuItem>
               <MenuItem value="Reportado">Reportado</MenuItem>
@@ -237,7 +229,7 @@ export default function UsuarioVista() {
             startIcon={<Add />}
             className="btn-interactive"
             onClick={() => setMostrarFormulario(true)}
-            sx={{ bgcolor: "#10b981", "&:hover": { bgcolor: "#059669" }, borderRadius: 3, px: 3, py: 1.2, fontWeight: "bold", boxShadow: "0 6px 20px rgba(16, 185, 129, 0.3)" }}
+            sx={{ bgcolor: "#0B750E", "&:hover": { bgcolor: "#064d08" }, borderRadius: 3, px: 3, py: 1.2, fontWeight: "bold", boxShadow: "0 6px 20px rgba(11, 117, 14, 0.3)" }}
           >
             Nuevo Incidente
           </Button>
@@ -245,13 +237,13 @@ export default function UsuarioVista() {
 
         {/* Lista de incidentes */}
         {incidentesFiltrados.length === 0 ? (
-          <Box className="slide-up-in stagger-3" sx={{ textAlign: "center", py: 10, bgcolor: "rgba(255,255,255,0.01)", border: "1px dashed rgba(255,255,255,0.08)", borderRadius: 5 }}>
-            <PendingActions sx={{ fontSize: 60, opacity: 0.25, mb: 2, color: "white" }} />
-            <Typography sx={{ color: "rgba(255,255,255,0.5)", mb: 2 }}>No se encontraron reportes registrados</Typography>
+          <Box className="slide-up-in stagger-3" sx={{ textAlign: "center", py: 10, bgcolor: "rgba(255,255,255,0.02)", border: "1px dashed rgba(255,255,255,0.15)", borderRadius: 5 }}>
+            <PendingActions sx={{ fontSize: 60, opacity: 0.3, mb: 2, color: "white" }} />
+            <Typography sx={{ color: "rgba(255,255,255,0.7)", mb: 2 }}>No se encontraron reportes registrados</Typography>
             <Button
               variant="outlined"
               className="btn-interactive"
-              sx={{ borderColor: "rgba(16, 185, 129, 0.4)", color: "#10b981", borderRadius: 3, "&:hover": { borderColor: "white", bgcolor: "rgba(255,255,255,0.04)" } }}
+              sx={{ borderColor: "#b9f6ca", color: "#b9f6ca", borderRadius: 3, "&:hover": { borderColor: "white", bgcolor: "rgba(255,255,255,0.05)" } }}
               onClick={() => setMostrarFormulario(true)}
             >
               Reportar mi primer incidente
@@ -270,35 +262,35 @@ export default function UsuarioVista() {
                     elevation={0}
                     sx={{
                       borderRadius: 4, cursor: "pointer",
-                      border: "1px solid rgba(255,255,255,0.05) !important",
+                      border: "1px solid rgba(255,255,255,0.45) !important",
                       transition: "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)"
                     }}
                     onClick={() => setIncidenteSeleccionado(inc)}
                   >
                     <CardContent sx={{ display: "flex", gap: 3, alignItems: "center", p: "20px !important" }}>
                       {inc.imagenURL && (
-                        <Box sx={{ width: 85, height: 85, borderRadius: 3, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.1)" }}>
+                        <Box sx={{ width: 85, height: 85, borderRadius: 3, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.3)" }}>
                           <img src={inc.imagenURL} alt="incidente" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         </Box>
                       )}
                       <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1, flexWrap: "wrap" }}>
-                          <Typography variant="h6" fontWeight="bold" noWrap sx={{ color: "white", fontSize: "1.05rem" }}>{inc.tipo}</Typography>
+                          <Typography variant="h6" fontWeight="bold" noWrap sx={{ color: "#1c1c1f", fontSize: "1.05rem" }}>{inc.tipo}</Typography>
                           <Box sx={{ display: "flex", alignItems: "center" }}>
                             <span className={`led-indicator led-${inc.estado === "En proceso" ? "orange" : inc.estado === "Resuelto" ? "green" : "red"}`}></span>
                             <Chip
                               label={inc.estado}
                               size="small"
                               icon={cfg.icon}
-                              sx={{ bgcolor: cfg.bg, color: cfg.color, fontWeight: "bold", fontSize: "0.72rem", border: "1px solid rgba(255,255,255,0.05)" }}
+                              sx={{ bgcolor: cfg.bg, color: cfg.color, fontWeight: "bold", fontSize: "0.72rem" }}
                             />
                           </Box>
                         </Box>
-                        <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mb: 1, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+                        <Typography variant="body2" sx={{ color: "#6e6f72", mb: 1, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
                           {inc.descripcion}
                         </Typography>
-                        <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.35)", display: "flex", alignItems: "center", gap: 0.5 }}>
-                          <LocationOn sx={{ fontSize: 13, color: "#10b981" }} /> {inc.ubicacionTexto} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}
+                        <Typography variant="caption" sx={{ color: "#6e6f72", display: "flex", alignItems: "center", gap: 0.5 }}>
+                          <LocationOn sx={{ fontSize: 13, color: "#0B750E" }} /> {inc.ubicacionTexto} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Reciente"}
                         </Typography>
                       </Box>
                     </CardContent>
@@ -312,9 +304,9 @@ export default function UsuarioVista() {
 
       {/* Modal formulario */}
       <Dialog open={mostrarFormulario} onClose={() => setMostrarFormulario(false)} PaperProps={{ className: "scale-in" }} maxWidth="sm" fullWidth>
-        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", py: 2 }}>
-          <Typography variant="h6" fontWeight="bold" sx={{ color: "white" }}>Reportar Incidente</Typography>
-          <IconButton onClick={() => setMostrarFormulario(false)} sx={{ color: "rgba(255,255,255,0.5)", "&:hover": { color: "white" } }}><Close /></IconButton>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(0,0,0,0.08)", py: 2 }}>
+          <Typography variant="h6" fontWeight="bold" sx={{ color: "#222222" }}>Reportar Incidente</Typography>
+          <IconButton onClick={() => setMostrarFormulario(false)} sx={{ color: "rgba(0,0,0,0.5)", "&:hover": { color: "black" } }}><Close /></IconButton>
         </DialogTitle>
         <DialogContent sx={{ pt: 2.5 }}>
           <FormularioIncidente onCerrar={() => setMostrarFormulario(false)} />
@@ -327,53 +319,53 @@ export default function UsuarioVista() {
           const cfg = ESTADO_CONFIG[incidenteSeleccionado.estado] || ESTADO_CONFIG["Reportado"];
           return (
             <>
-              <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", py: 2 }}>
+              <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(0,0,0,0.08)", py: 2 }}>
                 <Box>
-                  <Typography variant="h6" fontWeight="bold" sx={{ color: "white" }}>{incidenteSeleccionado.tipo}</Typography>
+                  <Typography variant="h6" fontWeight="bold" sx={{ color: "#222222" }}>{incidenteSeleccionado.tipo}</Typography>
                   <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
                     <span className={`led-indicator led-${incidenteSeleccionado.estado === "En proceso" ? "orange" : incidenteSeleccionado.estado === "Resuelto" ? "green" : "red"}`}></span>
                     <Chip label={incidenteSeleccionado.estado} size="small" sx={{ bgcolor: cfg.bg, color: cfg.color, fontWeight: "bold" }} />
                   </Box>
                 </Box>
-                <IconButton onClick={() => setIncidenteSeleccionado(null)} sx={{ color: "rgba(255,255,255,0.5)", "&:hover": { color: "white" } }}><Close /></IconButton>
+                <IconButton onClick={() => setIncidenteSeleccionado(null)} sx={{ color: "rgba(0,0,0,0.5)", "&:hover": { color: "black" } }}><Close /></IconButton>
               </DialogTitle>
               <DialogContent sx={{ pt: 3 }}>
                 {incidenteSeleccionado.imagenURL && (
-                  <Box sx={{ mb: 2.5, borderRadius: 4, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <Box sx={{ mb: 2.5, borderRadius: 4, overflow: "hidden", border: "1px solid rgba(0,0,0,0.1)" }}>
                     <img src={incidenteSeleccionado.imagenURL} alt="incidente" style={{ width: "100%", maxHeight: 280, objectFit: "cover" }} />
                   </Box>
                 )}
-                <Typography variant="body1" sx={{ color: "white", mb: 2, lineHeight: 1.6 }}>{incidenteSeleccionado.descripcion}</Typography>
-                <Divider sx={{ my: 2, borderColor: "rgba(255,255,255,0.08)" }} />
+                <Typography variant="body1" sx={{ color: "#222222", mb: 2, lineHeight: 1.6 }}>{incidenteSeleccionado.descripcion}</Typography>
+                <Divider sx={{ my: 2, borderColor: "rgba(0,0,0,0.08)" }} />
                 
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5, mb: 3 }}>
-                  <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1, color: "rgba(255,255,255,0.6)" }}>
-                    <LocationOn sx={{ fontSize: 18, color: "#10b981" }} /> 
+                  <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1, color: "#6e6f72" }}>
+                    <LocationOn sx={{ fontSize: 18, color: "#0B750E" }} /> 
                     <span>{incidenteSeleccionado.ubicacionTexto}</span>
                   </Typography>
                   {incidenteSeleccionado.latitud && incidenteSeleccionado.longitud && (
                     <Box sx={{ mt: 1 }}>
-                      <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold", color: "white" }}>
+                      <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold", color: "#222222" }}>
                         Ubicación Georreferenciada:
                       </Typography>
-                      <div ref={mapDetailRef} style={{ width: "100%", height: "200px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.12)" }} />
-                      <Typography variant="caption" sx={{ mt: 1, display: "block", color: "rgba(255,255,255,0.4)" }}>
+                      <div ref={mapDetailRef} style={{ width: "100%", height: "200px", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.12)" }} />
+                      <Typography variant="caption" sx={{ mt: 1, display: "block", color: "#6e6f72" }}>
                         Coordenadas: {incidenteSeleccionado.latitud.toFixed(6)}, {incidenteSeleccionado.longitud.toFixed(6)}
                       </Typography>
                     </Box>
                   )}
-                  <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)", pl: 0.5 }}>
+                  <Typography variant="caption" sx={{ color: "#6e6f72", pl: 0.5 }}>
                     Fecha de reporte: {incidenteSeleccionado.fechaCreacion?.toDate?.()?.toLocaleString("es-CO") || "Reciente"}
                   </Typography>
                 </Box>
                 
                 {incidenteSeleccionado.historialEstados?.length > 0 && (
-                  <Box sx={{ mt: 3, p: 2, bgcolor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 3 }}>
-                    <Typography variant="subtitle2" fontWeight="bold" sx={{ color: "white", mb: 1.5 }}>Historial de estados:</Typography>
+                  <Box sx={{ mt: 3, p: 2, bgcolor: "rgba(0,0,0,0.02)", border: "1px solid rgba(0,0,0,0.05)", borderRadius: 3 }}>
+                    <Typography variant="subtitle2" fontWeight="bold" sx={{ color: "#222222", mb: 1.5 }}>Historial de estados:</Typography>
                     {incidenteSeleccionado.historialEstados.map((h, i) => (
-                      <Box key={i} sx={{ display: "flex", justifyContent: "space-between", py: 0.5, borderBottom: i < incidenteSeleccionado.historialEstados.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none" }}>
-                        <Typography variant="caption" sx={{ fontWeight: "bold", color: ESTADO_CONFIG[h.estado]?.color || "white" }}>• {h.estado}</Typography>
-                        <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.4)" }}>{new Date(h.fecha).toLocaleString("es-CO")}</Typography>
+                      <Box key={i} sx={{ display: "flex", justifyContent: "space-between", py: 0.5, borderBottom: i < incidenteSeleccionado.historialEstados.length - 1 ? "1px solid rgba(0,0,0,0.04)" : "none" }}>
+                        <Typography variant="caption" sx={{ fontWeight: "bold", color: ESTADO_CONFIG[h.estado]?.color || "#222222" }}>• {h.estado}</Typography>
+                        <Typography variant="caption" sx={{ color: "#6e6f72" }}>{new Date(h.fecha).toLocaleString("es-CO")}</Typography>
                       </Box>
                     ))}
                   </Box>
