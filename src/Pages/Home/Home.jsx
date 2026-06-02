@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import uaisoLogo from "../../assets/UAIso.png";
+import uaOriginalLogo from "../../assets/UAOriginal.png";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../FireBase/config";
 import Swal from "sweetalert2";
@@ -8,7 +10,7 @@ import {
   Box, TextField, Button, Typography, InputAdornment,
   IconButton, CircularProgress, Paper, Divider
 } from "@mui/material";
-import { Visibility, VisibilityOff, EmailOutlined, LockOutlined } from "@mui/icons-material";
+import { Visibility, VisibilityOff, EmailOutlined, LockOutlined, WaterDrop, Bolt, Construction, Lock } from "@mui/icons-material";
 
 export default function Home() {
   const { iniciarSesion, iniciarSesionGoogle } = useAuth();
@@ -57,21 +59,21 @@ export default function Home() {
         p: 6, color: "white"
       }}>
         <Box sx={{ mb: 3 }}>
-          <svg width="120" height="100" viewBox="0 0 120 100">
-            <text x="5" y="80" fontSize="75" fontFamily="Outfit, sans-serif" fontWeight="bold" fill="#ffffff" opacity="0.9">UA</text>
-            <ellipse cx="95" cy="18" rx="20" ry="9" fill="#E81312" opacity="0.9"/>
-            <circle cx="76" cy="22" r="5" fill="none" stroke="#E81312" strokeWidth="2"/>
-          </svg>
+          <img src={uaisoLogo} alt="UA Logo" style={{ width: 260, height: "auto" }} />
         </Box>
-        <Typography variant="h4" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
-          Universidad de la Amazonia
-        </Typography>
         <Typography variant="h6" sx={{ opacity: 0.8, textAlign: "center", maxWidth: 320 }}>
           Sistema de Reporte de Incidentes Institucionales
         </Typography>
         <Box sx={{ mt: 4, display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
-          {["💧 Fugas de agua", "⚡ Problemas eléctricos", "🏗️ Infraestructura", "🔒 Seguridad"].map(t => (
-            <Box key={t} sx={{ bgcolor: "rgba(255,255,255,0.12)", backdropFilter: "blur(4px)", borderRadius: 2, px: 2, py: 1, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.15)", transition: "transform 0.2s", "&:hover": { transform: "translateY(-2px)" } }}>{t}</Box>
+          {[
+            { icon: <WaterDrop sx={{ fontSize: 16 }} />, label: "Fugas de agua" },
+            { icon: <Bolt sx={{ fontSize: 16 }} />, label: "Problemas eléctricos" },
+            { icon: <Construction sx={{ fontSize: 16 }} />, label: "Infraestructura" },
+            { icon: <Lock sx={{ fontSize: 16 }} />, label: "Seguridad" },
+          ].map(({ icon, label }) => (
+            <Box key={label} sx={{ display: "flex", alignItems: "center", gap: 0.75, bgcolor: "rgba(255,255,255,0.12)", backdropFilter: "blur(4px)", borderRadius: 2, px: 2, py: 1, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.15)", transition: "transform 0.2s", "&:hover": { transform: "translateY(-2px)" } }}>
+              {icon}{label}
+            </Box>
           ))}
         </Box>
       </Box>
@@ -79,8 +81,8 @@ export default function Home() {
       <Box sx={{ width: { xs: "100%", md: 480 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "rgba(0,0,0,0.15)", backdropFilter: "blur(10px)", borderLeft: "1px solid rgba(255,255,255,0.08)", p: 4 }}>
         <Paper className="glass-panel slide-from-left stagger-1" elevation={4} sx={{ width: "100%", maxWidth: 380, p: 4, borderRadius: 4 }}>
           <Box sx={{ textAlign: "center", mb: 4 }}>
-            <Box sx={{ width: 64, height: 64, borderRadius: "50%", bgcolor: "#0B750E", display: "inline-flex", alignItems: "center", justifyContent: "center", mb: 2, boxShadow: "0 4px 14px rgba(11, 117, 14, 0.4)" }}>
-              <Typography sx={{ color: "white", fontWeight: "bold", fontSize: 22 }}>UA</Typography>
+            <Box sx={{ mb: 2 }}>
+              <img src={uaOriginalLogo} alt="UA Logo" style={{ width: 100, height: "auto" }} />
             </Box>
             <Typography variant="h5" fontWeight="bold" color="#222222">Iniciar Sesión</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Ingresa con tu cuenta institucional</Typography>

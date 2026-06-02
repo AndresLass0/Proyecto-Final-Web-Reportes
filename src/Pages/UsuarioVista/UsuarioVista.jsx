@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {
   Add, Close, Search, Logout, ReportProblem,
-  CheckCircle, Schedule, PendingActions
+  CheckCircle, Schedule, PendingActions, LocationOn
 } from "@mui/icons-material";
 
 const ESTADO_CONFIG = {
@@ -123,7 +123,7 @@ export default function UsuarioVista() {
             <Card key={s.label} className="glass-panel btn-interactive" elevation={0} sx={{ borderRadius: 3, textAlign: "center", py: 1, border: "1px solid rgba(255,255,255,0.12)" }}>
               <CardContent sx={{ py: "12px !important" }}>
                 <Typography variant="h4" fontWeight="bold" sx={{ color: s.color }}>{s.value}</Typography>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>{s.label}</Typography>
+                <Typography variant="caption" sx={{ color: "#000000c9", fontWeight: 500 }}>{s.label}</Typography>
               </CardContent>
             </Card>
           ))}
@@ -147,6 +147,8 @@ export default function UsuarioVista() {
                 "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
                 "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
                 "&.Mui-focused fieldset": { borderColor: "#0B750E" },
+                "& input": { color: "white" },
+                "& input::placeholder": { color: "rgba(255,255,255,0.6)", opacity: 1 },
               },
               "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.6)" }
             }}
@@ -216,7 +218,7 @@ export default function UsuarioVista() {
                       )}
                       <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
-                          <Typography fontWeight="bold" noWrap sx={{ color: "white" }}>{inc.tipo}</Typography>
+                          <Typography fontWeight="bold" noWrap sx={{ color: "#1c1c1f" }}>{inc.tipo}</Typography>
                           <Box sx={{ display: "flex", alignItems: "center" }}>
                             <span className={`led-indicator led-${inc.estado === "En proceso" ? "orange" : inc.estado === "Resuelto" ? "green" : "red"}`}></span>
                             <Chip
@@ -227,10 +229,10 @@ export default function UsuarioVista() {
                             />
                           </Box>
                         </Box>
-                        <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.85)", mb: 0.5 }} noWrap>
+                        <Typography variant="body2" sx={{ color: "#6e6f72", mb: 0.5 }} noWrap>
                           {inc.descripcion}
                         </Typography>
-                        <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.55)" }}>
+                        <Typography variant="caption" sx={{ color: "#6e6f72" }}>
                            {inc.ubicacionTexto} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || "Fecha no disponible"}
                         </Typography>
                       </Box>
@@ -275,11 +277,11 @@ export default function UsuarioVista() {
                 )}
                 <Typography variant="body1" sx={{ mb: 1 }}>{incidenteSeleccionado.descripcion}</Typography>
                 <Divider sx={{ my: 1 }} />
-                <Typography variant="body2" color="text.secondary">📍 {incidenteSeleccionado.ubicacionTexto}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}><LocationOn sx={{ fontSize: 15 }} /> {incidenteSeleccionado.ubicacionTexto}</Typography>
                 {incidenteSeleccionado.latitud && incidenteSeleccionado.longitud && (
                   <Box sx={{ mt: 1.5, mb: 1.5 }}>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, fontWeight: "bold" }}>
-                      📍 Ubicación Georreferenciada:
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, fontWeight: "bold", display: "flex", alignItems: "center", gap: 0.5 }}>
+                      <LocationOn sx={{ fontSize: 15 }} /> Ubicación Georreferenciada:
                     </Typography>
                     <div ref={mapDetailRef} style={{ width: "100%", height: "200px", borderRadius: "8px", border: "1px solid #ccc" }} />
                     <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>

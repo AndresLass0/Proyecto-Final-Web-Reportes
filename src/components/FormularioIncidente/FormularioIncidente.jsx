@@ -9,7 +9,7 @@ import {
   Box, TextField, Button, Typography, Select, MenuItem,
   FormControl, InputLabel, CircularProgress, Paper, Chip
 } from "@mui/material";
-import { CloudUpload, MyLocation, LocationOn } from "@mui/icons-material";
+import { CloudUpload, MyLocation, LocationOn, Assignment } from "@mui/icons-material";
 
 const TIPOS = [
   "Fuga de agua", "Problema eléctrico", "Infraestructura dañada",
@@ -138,7 +138,7 @@ export default function FormularioIncidente({ onCerrar }) {
 
   return (
     <Paper sx={{ p: 3, borderRadius: 3 }}>
-      <Typography variant="h6" fontWeight="bold" sx={{ mb: 2, color: "#0B750E" }}>📋 Nuevo Incidente</Typography>
+      <Typography variant="h6" fontWeight="bold" sx={{ mb: 2, color: "#0B750E", display: "flex", alignItems: "center", gap: 1 }}><Assignment />Nuevo Incidente</Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <FormControl fullWidth>
           <InputLabel>Tipo de incidente</InputLabel>

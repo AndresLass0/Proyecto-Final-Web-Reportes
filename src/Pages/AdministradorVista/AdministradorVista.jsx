@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import {
   Close, Search, Logout, MergeType, BarChart, TableRows,
-  NotificationsOutlined, CallSplit
+  NotificationsOutlined, CallSplit, Person, LocationOn,
+  CalendarToday, Security, Print, CheckCircle
 } from "@mui/icons-material";
 import {
   BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -71,14 +72,14 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
               </Box>
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.3, flexWrap: "wrap" }}>
-                  <Typography fontWeight="bold" variant="body2" sx={{ color: "white" }}>Grupo: {inc.tipo}</Typography>
+                  <Typography fontWeight="bold" variant="body2" sx={{ color: "#1c1c1f" }}>Grupo: {inc.tipo}</Typography>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <span className={`led-indicator led-${inc.estado === "En proceso" ? "orange" : inc.estado === "Resuelto" ? "green" : "red"}`}></span>
                     <Chip label={inc.estado} size="small" sx={{ bgcolor: cfg.bg, color: cfg.color, fontSize: "0.65rem", fontWeight: "bold" }} />
                   </Box>
                   <Chip label={`${miembros.length} incidentes`} size="small" sx={{ bgcolor: "rgba(227,242,253,0.12)", color: "#b3e5fc", fontSize: "0.65rem", border: "1px solid rgba(179,229,252,0.2)" }} />
                 </Box>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.55)" }}>
+                <Typography variant="caption" sx={{ color: "#6e6f72" }}>
                   {miembros.map(m => m.ubicacionTexto).filter(Boolean).join(" · ")}
                 </Typography>
               </Box>
@@ -114,11 +115,15 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
                       </Box>
                     )}
                     <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Typography variant="caption" sx={{ fontWeight: "bold", display: "block", color: "white" }}>{m.tipo}</Typography>
-                      <Typography variant="caption" sx={{ display: "block", fontSize: "0.75rem", mb: 0.2, color: "rgba(255,255,255,0.8)" }} noWrap>{m.descripcion}</Typography>
-                      <Typography variant="caption" sx={{ fontSize: "0.65rem", display: "block", color: "rgba(255,255,255,0.5)" }}>
-                        👤 {m.usuarioNombre} · 📍 {m.ubicacionTexto} · 📅 {m.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || ""}
-                      </Typography>
+                      <Typography variant="caption" sx={{ fontWeight: "bold", display: "block", color: "#1c1c1f" }}>{m.tipo}</Typography>
+                      <Typography variant="caption" sx={{ display: "block", fontSize: "0.75rem", mb: 0.2, color: "#6e6f72" }} noWrap>{m.descripcion}</Typography>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 0.4, flexWrap: "wrap", fontSize: "0.65rem", color: "#6e6f72" }}>
+                        <Person sx={{ fontSize: 11 }} />{m.usuarioNombre}
+                        <span>·</span>
+                        <LocationOn sx={{ fontSize: 11 }} />{m.ubicacionTexto}
+                        <span>·</span>
+                        <CalendarToday sx={{ fontSize: 11 }} />{m.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || ""}
+                      </Box>
                     </Box>
                     <Button size="small" variant="outlined" startIcon={<CallSplit sx={{ fontSize: 12 }} />}
                       onClick={(e) => { e.stopPropagation(); onDesagrupar(m.id, m.grupoIncidenteId); }}
@@ -152,16 +157,20 @@ function TarjetaIncidente({ inc, todosIncidentes, isSelected, onSelect, onCambia
         )}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.3, flexWrap: "wrap" }}>
-            <Typography fontWeight="bold" variant="body2" sx={{ color: "white" }}>{inc.tipo}</Typography>
+            <Typography fontWeight="bold" variant="body2" sx={{ color: "#1c1c1f" }}>{inc.tipo}</Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <span className={`led-indicator led-${inc.estado === "En proceso" ? "orange" : inc.estado === "Resuelto" ? "green" : "red"}`}></span>
               <Chip label={inc.estado} size="small" sx={{ bgcolor: cfg.bg, color: cfg.color, fontSize: "0.65rem", fontWeight: "bold" }} />
             </Box>
           </Box>
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", display: "block" }} noWrap>{inc.descripcion}</Typography>
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.55)" }}>
-            👤 {inc.usuarioNombre} · 📍 {inc.ubicacionTexto} · {inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || ""}
-          </Typography>
+          <Typography variant="caption" sx={{ color: "#6e6f72", display: "block" }} noWrap>{inc.descripcion}</Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.4, flexWrap: "wrap", fontSize: "0.75rem", color: "#6e6f72" }}>
+            <Person sx={{ fontSize: 12 }} />{inc.usuarioNombre}
+            <span>·</span>
+            <LocationOn sx={{ fontSize: 12 }} />{inc.ubicacionTexto}
+            <span>·</span>
+            <CalendarToday sx={{ fontSize: 12 }} />{inc.fechaCreacion?.toDate?.()?.toLocaleDateString("es-CO") || ""}
+          </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, minWidth: 120 }}>
           {ESTADOS.filter(e => e !== inc.estado).map(e => (
@@ -212,7 +221,7 @@ export default function AdministradorVista() {
   useEffect(() => {
     notifTimer.current = setInterval(() => {
       const pendientes = incidentes.filter(i => i.estado === "Reportado").length;
-      if (pendientes > 0) setToastMsg(`⚠️ Tienes ${pendientes} incidente(s) en estado "Reportado" sin revisar`);
+      if (pendientes > 0) setToastMsg(`Tienes ${pendientes} incidente(s) en estado "Reportado" sin revisar`);
     }, 30 * 60 * 1000);
     return () => clearInterval(notifTimer.current);
   }, [incidentes]);
@@ -376,8 +385,8 @@ export default function AdministradorVista() {
     <Box className="flow-gradient-bg" sx={{ minHeight: "100vh", pb: 5 }}>
       <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(34, 34, 34, 0.15)", backdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold", fontSize: { xs: "0.9rem", sm: "1.2rem" }, color: "white" }}>
-            🛡️ Panel Administrador — UA Incidentes
+          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold", fontSize: { xs: "0.9rem", sm: "1.2rem" }, color: "white", display: "flex", alignItems: "center", gap: 1 }}>
+            <Security /> Panel Administrador — UA Incidentes
           </Typography>
           {/* Campana notificaciones */}
           <IconButton color="inherit" onClick={e => setCampanaAnchor(e.currentTarget)} sx={{ color: "white" }}>
@@ -401,11 +410,11 @@ export default function AdministradorVista() {
       >
         <Box sx={{ width: 320, maxHeight: 400, overflow: "auto" }}>
           <Box sx={{ p: 2, bgcolor: "#0B750E", color: "white" }}>
-            <Typography fontWeight="bold">🔔 Incidentes Pendientes ({incidentesPendientes.length})</Typography>
+            <Typography fontWeight="bold" sx={{ display: "flex", alignItems: "center", gap: 1 }}><NotificationsOutlined sx={{ fontSize: 18 }} /> Incidentes Pendientes ({incidentesPendientes.length})</Typography>
           </Box>
           {incidentesPendientes.length === 0 ? (
             <Box sx={{ p: 2, textAlign: "center", color: "text.secondary" }}>
-              <Typography variant="body2">No hay incidentes pendientes ✅</Typography>
+              <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}><CheckCircle sx={{ fontSize: 16, color: "#0B750E" }} />No hay incidentes pendientes</Typography>
             </Box>
           ) : (
             <List dense>
@@ -437,7 +446,7 @@ export default function AdministradorVista() {
             <Card key={s.label} className="glass-panel btn-interactive" elevation={0} sx={{ borderRadius: 3, textAlign: "center", border: "1px solid rgba(255,255,255,0.12)" }}>
               <CardContent sx={{ py: "12px !important" }}>
                 <Typography variant="h4" fontWeight="bold" sx={{ color: s.color }}>{s.value}</Typography>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>{s.label}</Typography>
+                <Typography variant="caption" sx={{ color: "#000000c9", fontWeight: 500 }}>{s.label}</Typography>
               </CardContent>
             </Card>
           ))}
@@ -463,6 +472,8 @@ export default function AdministradorVista() {
                     "& fieldset": { borderColor: "rgba(255,255,255,0.15)" },
                     "&:hover fieldset": { borderColor: "rgba(255,255,255,0.3)" },
                     "&.Mui-focused fieldset": { borderColor: "#0B750E" },
+                    "& input": { color: "white" },
+                    "& input::placeholder": { color: "rgba(255,255,255,0.6)", opacity: 1 },
                   },
                   "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.6)" }
                 }}
@@ -542,8 +553,8 @@ export default function AdministradorVista() {
           <Box className="estadisticas-print">
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }} className="no-print">
               <Typography variant="h6" fontWeight="bold">Estadísticas Generales</Typography>
-              <Button variant="outlined" onClick={() => window.print()} sx={{ borderColor: "#0B750E", color: "#0B750E" }}>
-                🖨️ Imprimir
+              <Button variant="outlined" startIcon={<Print />} onClick={() => window.print()} sx={{ borderColor: "#0B750E", color: "#0B750E" }}>
+                Imprimir
               </Button>
             </Box>
             <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
@@ -641,13 +652,13 @@ export default function AdministradorVista() {
                     )}
                     <Typography sx={{ mb: 1 }}>{incidenteDetalle.descripcion}</Typography>
                     <Divider sx={{ my: 1 }} />
-                    <Typography variant="body2" color="text.secondary">👤 {incidenteDetalle.usuarioNombre}</Typography>
-                    <Typography variant="body2" color="text.secondary">📍 {incidenteDetalle.ubicacionTexto}</Typography>
-                    
+                    <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}><Person sx={{ fontSize: 15 }} /> {incidenteDetalle.usuarioNombre}</Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}><LocationOn sx={{ fontSize: 15 }} /> {incidenteDetalle.ubicacionTexto}</Typography>
+
                     {incidenteDetalle.latitud && incidenteDetalle.longitud && (
                       <Box sx={{ mt: 1.5, mb: 1.5 }}>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, fontWeight: "bold" }}>
-                          📍 Ubicación Georreferenciada:
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5, fontWeight: "bold", display: "flex", alignItems: "center", gap: 0.5 }}>
+                          <LocationOn sx={{ fontSize: 15 }} /> Ubicación Georreferenciada:
                         </Typography>
                         <div ref={mapDetailRef} style={{ width: "100%", height: "200px", borderRadius: "8px", border: "1px solid #ccc" }} />
                         <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
@@ -656,7 +667,7 @@ export default function AdministradorVista() {
                       </Box>
                     )}
 
-                    <Typography variant="body2" color="text.secondary">📅 {incidenteDetalle.fechaCreacion?.toDate?.()?.toLocaleString("es-CO") || ""}</Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}><CalendarToday sx={{ fontSize: 15 }} /> {incidenteDetalle.fechaCreacion?.toDate?.()?.toLocaleString("es-CO") || ""}</Typography>
                   </>
                 )}
                 <Box sx={{ mt: 2 }}>
