@@ -224,7 +224,7 @@ export default function UsuarioVista() {
                     <Typography variant="subtitle2" fontWeight="bold">Historial de estados:</Typography>
                     {incidenteSeleccionado.historialEstados.map((h, i) => (
                       <Typography key={i} variant="caption" display="block" color="text.secondary">
-                        • {h.estado} — {new Date(h.fecha).toLocaleString("es-CO")}
+                        • {h.estado} — {new Date(h.fecha).toLocaleString("es-CO")} <br/>
                       </Typography>
                     ))}
                   </Box>

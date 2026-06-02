@@ -3,35 +3,50 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../FireBase/config";
+import Swal from "sweetalert2";
 import {
-  Box, TextField, Button, Typography, Alert,
-  InputAdornment, IconButton, CircularProgress, Paper
+  Box, TextField, Button, Typography, InputAdornment,
+  IconButton, CircularProgress, Paper, Divider
 } from "@mui/material";
 import { Visibility, VisibilityOff, EmailOutlined, LockOutlined } from "@mui/icons-material";
 
 export default function Home() {
-  const { iniciarSesion, usuario } = useAuth();
+  const { iniciarSesion, iniciarSesionGoogle } = useAuth();
   const navigate = useNavigate();
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
   const [mostrarPass, setMostrarPass] = useState(false);
-  const [error, setError] = useState("");
   const [cargando, setCargando] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
-    setError("");
-    if (!correo || !password) { setError("Todos los campos son obligatorios"); return; }
+    if (!correo || !password) {
+      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Todos los campos son obligatorios", confirmButtonColor: "#0B750E" });
+      return;
+    }
     setCargando(true);
     try {
       const cred = await iniciarSesion(correo, password);
       const snap = await getDoc(doc(db, "usuarios", cred.user.uid));
       const rol = snap.data()?.rol;
+      await Swal.fire({ icon: "success", title: "¡Bienvenido!", text: `Hola ${cred.user.displayName || correo}`, timer: 1500, showConfirmButton: false });
       navigate(rol === "administrador" ? "/admin" : "/usuario");
     } catch (err) {
-      setError("Correo o contraseña incorrectos");
+      Swal.fire({ icon: "error", title: "Error de acceso", text: "Correo o contraseña incorrectos", confirmButtonColor: "#E81312" });
     } finally {
       setCargando(false);
+    }
+  }
+
+  async function handleGoogle() {
+    try {
+      const user = await iniciarSesionGoogle();
+      const snap = await getDoc(doc(db, "usuarios", user.uid));
+      const rol = snap.data()?.rol;
+      await Swal.fire({ icon: "success", title: "¡Bienvenido!", text: `Hola ${user.displayName}`, timer: 1500, showConfirmButton: false });
+      navigate(rol === "administrador" ? "/admin" : "/usuario");
+    } catch (err) {
+      Swal.fire({ icon: "error", title: "Error", text: "No se pudo iniciar sesión con Google", confirmButtonColor: "#E81312" });
     }
   }
 
@@ -40,18 +55,16 @@ export default function Home() {
       minHeight: "100vh", display: "flex",
       background: "linear-gradient(135deg, #0B750E 0%, #064d08 50%, #1a1a1a 100%)",
     }}>
-      {/* Panel izquierdo decorativo */}
       <Box sx={{
         flex: 1, display: { xs: "none", md: "flex" },
         flexDirection: "column", alignItems: "center", justifyContent: "center",
         p: 6, color: "white"
       }}>
-        {/* Logo SVG UA */}
         <Box sx={{ mb: 3 }}>
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-            <text x="10" y="85" fontSize="80" fontFamily="serif" fontWeight="bold" fill="#ffffff" opacity="0.9">UA</text>
-            <ellipse cx="85" cy="25" rx="22" ry="10" fill="#E81312" opacity="0.9"/>
-            <circle cx="68" cy="28" r="5" fill="none" stroke="#E81312" strokeWidth="2"/>
+          <svg width="120" height="100" viewBox="0 0 120 100">
+            <text x="5" y="80" fontSize="75" fontFamily="serif" fontWeight="bold" fill="#ffffff" opacity="0.9">UA</text>
+            <ellipse cx="95" cy="18" rx="20" ry="9" fill="#E81312" opacity="0.9"/>
+            <circle cx="76" cy="22" r="5" fill="none" stroke="#E81312" strokeWidth="2"/>
           </svg>
         </Box>
         <Typography variant="h4" fontFamily="Georgia, serif" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
@@ -62,60 +75,36 @@ export default function Home() {
         </Typography>
         <Box sx={{ mt: 4, display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
           {["💧 Fugas de agua", "⚡ Problemas eléctricos", "🏗️ Infraestructura", "🔒 Seguridad"].map(t => (
-            <Box key={t} sx={{
-              bgcolor: "rgba(255,255,255,0.15)", borderRadius: 2,
-              px: 2, py: 1, fontSize: "0.85rem", backdropFilter: "blur(4px)"
-            }}>{t}</Box>
+            <Box key={t} sx={{ bgcolor: "rgba(255,255,255,0.15)", borderRadius: 2, px: 2, py: 1, fontSize: "0.85rem" }}>{t}</Box>
           ))}
         </Box>
       </Box>
 
-      {/* Panel derecho - formulario */}
-      <Box sx={{
-        width: { xs: "100%", md: 480 },
-        display: "flex", alignItems: "center", justifyContent: "center",
-        bgcolor: "#fafafa", p: 4
-      }}>
+      <Box sx={{ width: { xs: "100%", md: 480 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "#fafafa", p: 4 }}>
         <Paper elevation={0} sx={{ width: "100%", maxWidth: 380, p: 4 }}>
           <Box sx={{ textAlign: "center", mb: 4 }}>
-            <Box sx={{
-              width: 64, height: 64, borderRadius: "50%",
-              bgcolor: "#0B750E", display: "inline-flex",
-              alignItems: "center", justifyContent: "center", mb: 2
-            }}>
+            <Box sx={{ width: 64, height: 64, borderRadius: "50%", bgcolor: "#0B750E", display: "inline-flex", alignItems: "center", justifyContent: "center", mb: 2 }}>
               <Typography sx={{ color: "white", fontWeight: "bold", fontSize: 22, fontFamily: "serif" }}>UA</Typography>
             </Box>
             <Typography variant="h5" fontWeight="bold" color="#222222">Iniciar Sesión</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              Ingresa con tu cuenta institucional
-            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Ingresa con tu cuenta institucional</Typography>
           </Box>
-
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
           <Box component="form" onSubmit={handleLogin} sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
             <TextField
-              label="Correo electrónico"
-              type="email"
-              value={correo}
-              onChange={e => setCorreo(e.target.value)}
-              fullWidth
-              InputProps={{
-                startAdornment: <InputAdornment position="start"><EmailOutlined sx={{ color: "#0B750E" }} /></InputAdornment>
-              }}
+              label="Correo electrónico" type="email" value={correo}
+              onChange={e => setCorreo(e.target.value)} fullWidth
+              InputProps={{ startAdornment: <InputAdornment position="start"><EmailOutlined sx={{ color: "#0B750E" }} /></InputAdornment> }}
               sx={{ "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#0B750E" } }}
             />
             <TextField
-              label="Contraseña"
-              type={mostrarPass ? "text" : "password"}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              fullWidth
+              label="Contraseña" type={mostrarPass ? "text" : "password"} value={password}
+              onChange={e => setPassword(e.target.value)} fullWidth
               InputProps={{
                 startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#0B750E" }} /></InputAdornment>,
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => setMostrarPass(!mostrarPass)}>
+                    <IconButton onClick={() => setMostrarPass(!mostrarPass)} size="small">
                       {mostrarPass ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -123,26 +112,32 @@ export default function Home() {
               }}
               sx={{ "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#0B750E" } }}
             />
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              disabled={cargando}
-              sx={{
-                bgcolor: "#0B750E", py: 1.5, fontSize: "1rem",
-                "&:hover": { bgcolor: "#064d08" },
-                borderRadius: 2
-              }}
-            >
+            <Button type="submit" variant="contained" fullWidth disabled={cargando}
+              sx={{ bgcolor: "#0B750E", py: 1.5, fontSize: "1rem", "&:hover": { bgcolor: "#064d08" }, borderRadius: 2 }}>
               {cargando ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Ingresar"}
             </Button>
           </Box>
 
+          <Divider sx={{ my: 2 }}>o</Divider>
+
+          <Button
+            variant="outlined" fullWidth onClick={handleGoogle}
+            startIcon={
+              <svg width="18" height="18" viewBox="0 0 18 18">
+                <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
+                <path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/>
+                <path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/>
+                <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/>
+              </svg>
+            }
+            sx={{ borderColor: "#ddd", color: "#444", "&:hover": { borderColor: "#bbb", bgcolor: "#f9f9f9" }, borderRadius: 2, py: 1.2 }}
+          >
+            Continuar con Google
+          </Button>
+
           <Typography variant="body2" textAlign="center" sx={{ mt: 3, color: "text.secondary" }}>
             ¿No tienes cuenta?{" "}
-            <Link to="/register" style={{ color: "#0B750E", fontWeight: "bold", textDecoration: "none" }}>
-              Regístrate aquí
-            </Link>
+            <Link to="/register" style={{ color: "#0B750E", fontWeight: "bold", textDecoration: "none" }}>Regístrate aquí</Link>
           </Typography>
         </Paper>
       </Box>

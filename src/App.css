@@ -1,8 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Roboto', 'Arial', sans-serif;
@@ -10,20 +6,25 @@ body {
   color: #222222;
 }
 
-/* Estilos de impresiÃ³n para estadÃ­sticas */
 @media print {
-  body * {
-    visibility: hidden;
-  }
+  body * { visibility: hidden; }
+
   .estadisticas-print,
-  .estadisticas-print * {
-    visibility: visible;
-  }
+  .estadisticas-print * { visibility: visible; }
+
   .estadisticas-print {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 0; top: 0;
     width: 100%;
-    padding: 20px;
+    padding: 24px;
+  }
+
+  .no-print { display: none !important; }
+
+  .estadisticas-print .MuiCard-root {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd;
   }
 }

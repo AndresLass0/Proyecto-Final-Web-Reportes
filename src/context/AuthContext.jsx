@@ -5,6 +5,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../FireBase/config";
@@ -16,11 +18,9 @@ export function AuthProvider({ children }) {
   const [rol, setRol] = useState(null);
   const [cargando, setCargando] = useState(true);
 
-  // Registrar nuevo usuario
   async function registrar(nombre, correo, password) {
     const credencial = await createUserWithEmailAndPassword(auth, correo, password);
     await updateProfile(credencial.user, { displayName: nombre });
-    // Guardar en Firestore con rol "usuario"
     await setDoc(doc(db, "usuarios", credencial.user.uid), {
       uid: credencial.user.uid,
       nombre,
@@ -28,28 +28,41 @@ export function AuthProvider({ children }) {
       rol: "usuario",
       fechaCreacion: new Date().toISOString(),
     });
+    await signOut(auth);
     return credencial.user;
   }
 
-  // Iniciar sesión
   async function iniciarSesion(correo, password) {
     return signInWithEmailAndPassword(auth, correo, password);
   }
 
-  // Cerrar sesión
+  async function iniciarSesionGoogle() {
+    const provider = new GoogleAuthProvider();
+    const credencial = await signInWithPopup(auth, provider);
+    const user = credencial.user;
+    const snap = await getDoc(doc(db, "usuarios", user.uid));
+    if (!snap.exists()) {
+      await setDoc(doc(db, "usuarios", user.uid), {
+        uid: user.uid,
+        nombre: user.displayName || "Usuario Google",
+        correo: user.email,
+        rol: "usuario",
+        fechaCreacion: new Date().toISOString(),
+      });
+    }
+    return user;
+  }
+
   async function cerrarSesion() {
     return signOut(auth);
   }
 
-  // Escuchar cambios de autenticación
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUsuario(user);
         const snap = await getDoc(doc(db, "usuarios", user.uid));
-        if (snap.exists()) {
-          setRol(snap.data().rol);
-        }
+        if (snap.exists()) setRol(snap.data().rol);
       } else {
         setUsuario(null);
         setRol(null);
@@ -60,7 +73,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ usuario, rol, cargando, registrar, iniciarSesion, cerrarSesion }}>
+    <AuthContext.Provider value={{ usuario, rol, cargando, registrar, iniciarSesion, iniciarSesionGoogle, cerrarSesion }}>
       {!cargando && children}
     </AuthContext.Provider>
   );
