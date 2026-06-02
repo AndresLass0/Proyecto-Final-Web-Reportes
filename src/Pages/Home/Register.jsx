@@ -1,4 +1,5 @@
 import { useState } from "react";
+import uaNegroLogo from "../../assets/UANegro.png";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Swal from "sweetalert2";
@@ -74,8 +75,8 @@ export default function Register() {
     }}>
       <Paper className="glass-panel slide-from-right stagger-1" elevation={4} sx={{ width: "100%", maxWidth: 420, p: 4, borderRadius: 4 }}>
         <Box sx={{ textAlign: "center", mb: 3 }}>
-          <Box sx={{ width: 64, height: 64, borderRadius: "50%", bgcolor: "#0B750E", display: "inline-flex", alignItems: "center", justifyContent: "center", mb: 2, boxShadow: "0 4px 14px rgba(11, 117, 14, 0.4)" }}>
-            <Typography sx={{ color: "white", fontWeight: "bold", fontSize: 22 }}>UA</Typography>
+          <Box sx={{ mb: 2 }}>
+            <img src={uaNegroLogo} alt="UA Logo" style={{ width: 110, height: "auto" }} />
           </Box>
           <Typography variant="h5" fontWeight="bold" color="#222222">Crear Cuenta</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Universidad de la Amazonia</Typography>

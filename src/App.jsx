@@ -7,6 +7,7 @@ import UsuarioVista from "./Pages/UsuarioVista/UsuarioVista";
 import AdministradorVista from "./Pages/AdministradorVista/AdministradorVista";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import Footer from "./components/Footer/Footer";
 
 const theme = createTheme({
   typography: {
@@ -88,19 +89,22 @@ function RutaPublica({ children }) {
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<RutaPublica><Home /></RutaPublica>} />
-      <Route path="/register" element={<RutaPublica><Register /></RutaPublica>} />
-      <Route
-        path="/usuario"
-        element={<RutaProtegida rolRequerido="usuario"><UsuarioVista /></RutaProtegida>}
-      />
-      <Route
-        path="/admin"
-        element={<RutaProtegida rolRequerido="administrador"><AdministradorVista /></RutaProtegida>}
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<RutaPublica><Home /></RutaPublica>} />
+        <Route path="/register" element={<RutaPublica><Register /></RutaPublica>} />
+        <Route
+          path="/usuario"
+          element={<RutaProtegida rolRequerido="usuario"><UsuarioVista /></RutaProtegida>}
+        />
+        <Route
+          path="/admin"
+          element={<RutaProtegida rolRequerido="administrador"><AdministradorVista /></RutaProtegida>}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 
