@@ -7,6 +7,7 @@ import { db } from "../../FireBase/config";
 import { useAuth } from "../../context/AuthContext";
 import { loadGoogleMaps } from "../../utils/googleMaps";
 import AnimatedCounter from "../../components/AnimatedCounter";
+import Header from "../../components/Header/Header";
 import {
   Box, Typography, Button, Chip, Card, CardContent,
   TextField, Select, MenuItem, FormControl, InputLabel,
@@ -236,7 +237,6 @@ export default function AdministradorVista() {
   const [tab, setTab] = useState(0);
   const [filtroPeriodo, setFiltroPeriodo] = useState("todos");
   const [toastMsg, setToastMsg] = useState("");
-  const [campanaAnchor, setCampanaAnchor] = useState(null);
   const notifTimer = useRef(null);
 
   useEffect(() => {
@@ -449,87 +449,7 @@ export default function AdministradorVista() {
       <div className="ambient-glow-2" />
       <div className="ambient-glow-3" />
 
-      {/* AppBar */}
-      <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(34, 34, 34, 0.15)", backdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
-        <Toolbar sx={{ maxWidth: 1200, width: "100%", mx: "auto" }}>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 900, fontSize: { xs: "0.9rem", sm: "1.15rem" }, color: "white", display: "flex", alignItems: "center", gap: 1, letterSpacing: "-0.03em" }}>
-            <Security sx={{ color: "white" }} /> Panel Administrador — UA Incidentes
-          </Typography>
-          
-          {/* Campana notificaciones */}
-          <IconButton color="inherit" onClick={e => setCampanaAnchor(e.currentTarget)} sx={{ mr: 1, color: "white" }}>
-            <Badge badgeContent={incidentesPendientes.length} color="error">
-              <NotificationsOutlined />
-            </Badge>
-          </IconButton>
-          
-          <Avatar sx={{ bgcolor: "#E81312", mr: 1, width: 36, height: 36, fontSize: 14, fontWeight: "bold", border: "1px solid rgba(255,255,255,0.12)" }}>
-            {(usuario?.email || "A")[0].toUpperCase()}
-          </Avatar>
-          <IconButton color="inherit" onClick={cerrarSesion} sx={{ color: "white" }}><Logout /></IconButton>
-        </Toolbar>
-      </AppBar>
-
-      {/* Popover campana */}
-      <Popover
-        open={Boolean(campanaAnchor)} anchorEl={campanaAnchor}
-        onClose={() => setCampanaAnchor(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{
-          sx: {
-            bgcolor: "rgba(255,255,255,0.95)",
-            backdropFilter: "blur(20px)",
-            border: "1px solid rgba(0,0,0,0.1)",
-            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
-            borderRadius: 4, width: 330
-          }
-        }}
-      >
-        <Box sx={{ maxHeight: 400, overflow: "auto" }}>
-          <Box sx={{ p: 2, bgcolor: "#0B750E", borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
-            <Typography fontWeight="800" sx={{ display: "flex", alignItems: "center", gap: 1, color: "white", fontSize: "0.9rem" }}><NotificationsOutlined sx={{ fontSize: 18, color: "white" }} /> Incidentes Pendientes ({incidentesPendientes.length})</Typography>
-          </Box>
-          {incidentesPendientes.length === 0 ? (
-            <Box sx={{ p: 3, textAlign: "center", color: "#666666" }}>
-              <CheckCircle sx={{ fontSize: 32, color: "#0B750E", opacity: 0.8, mb: 1 }} />
-              <Typography variant="body2">¡Excelente! No hay pendientes.</Typography>
-            </Box>
-          ) : (
-            <List dense sx={{ py: 0 }}>
-              {incidentesPendientes.slice(0, 10).map((inc, i) => {
-                const fecha = inc.fechaCreacion?.toDate ? inc.fechaCreacion.toDate() : (inc.fechaCreacion ? new Date(inc.fechaCreacion) : null);
-                const diffHoras = fecha ? (new Date() - fecha) / (1000 * 60 * 60) : 0;
-                // Si tiene menos de 2 horas es considerado "Nuevo", si no es "Recuerdo"
-                const esNuevo = !fecha || diffHoras < 2;
-
-                return (
-                  <ListItem key={inc.id} divider={i < incidentesPendientes.length - 1} sx={{ borderColor: "rgba(0,0,0,0.05)", py: 1.5 }}>
-                    <ListItemText
-                      primary={
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: "space-between" }}>
-                          <Typography variant="body2" fontWeight="bold" color="#222222" noWrap sx={{ maxWidth: 170 }}>
-                            {inc.tipo}
-                          </Typography>
-                          {esNuevo ? (
-                            <Chip label="Nuevo" size="small" sx={{ bgcolor: "#e8f5e9", color: "#0B750E", fontWeight: "bold", fontSize: "0.65rem", height: 18 }} />
-                          ) : (
-                            <Chip label="Es recuerdo" size="small" sx={{ bgcolor: "#fde8e8", color: "#E81312", fontWeight: "bold", fontSize: "0.65rem", height: 18 }} />
-                          )}
-                        </Box>
-                      }
-                      secondary={<Typography variant="caption" color="#666666">{inc.usuarioNombre} · {fecha ? fecha.toLocaleDateString("es-CO") : "Reciente"}</Typography>}
-                    />
-                  </ListItem>
-                );
-              })}
-              {incidentesPendientes.length > 10 && (
-                <ListItem sx={{ py: 1, textAlign: "center" }}><ListItemText primary={<Typography variant="caption" color="#0B750E" fontWeight="bold">+{incidentesPendientes.length - 10} más por revisar</Typography>} /></ListItem>
-              )}
-            </List>
-          )}
-        </Box>
-      </Popover>
+      <Header tipo="admin" usuario={usuario} cerrarSesion={cerrarSesion} incidentesPendientes={incidentesPendientes} />
 
       <Box sx={{ maxWidth: 1150, mx: "auto", p: { xs: 2, sm: 3 }, position: "relative", zIndex: 1 }}>
         

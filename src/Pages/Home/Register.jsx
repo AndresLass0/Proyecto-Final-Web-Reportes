@@ -2,6 +2,7 @@ import { useState } from "react";
 import uaNegroLogo from "../../assets/UANegro.png";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Header from "../../components/Header/Header";
 import Swal from "sweetalert2";
 import {
   Box, TextField, Button, Typography, InputAdornment,
@@ -78,15 +79,18 @@ export default function Register() {
 
   return (
     <Box sx={{
-      minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-      bgcolor: "#08090d", p: 2, position: "relative", overflow: "hidden"
+      minHeight: "100vh", display: "flex", flexDirection: "column",
+      bgcolor: "#08090d", position: "relative", overflow: "hidden"
     }}>
       {/* Luces flotantes ambientales de fondo */}
       <div className="ambient-glow-1" />
       <div className="ambient-glow-2" />
       <div className="ambient-glow-3" />
 
-      <Paper
+      <Header tipo="register" />
+
+      <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "center", p: 2 }}>
+        <Paper
         className="glass-panel slide-from-right stagger-1"
         elevation={0}
         sx={{
@@ -158,6 +162,7 @@ export default function Register() {
           <Link to="/" style={{ color: "#0B750E", fontWeight: "bold", textDecoration: "none" }}>Inicia sesión</Link>
         </Typography>
       </Paper>
+      </Box>
     </Box>
   );
 }

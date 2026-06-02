@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import uaisoLogo from "../../assets/UAIso.png";
 import uaOriginalLogo from "../../assets/UAOriginal.png";
+import Header from "../../components/Header/Header";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../FireBase/config";
 import Swal from "sweetalert2";
@@ -91,26 +92,15 @@ export default function Home() {
       <div className="ambient-glow-2" />
       <div className="ambient-glow-3" />
 
+      <Header tipo="landing" scrollAPortal={scrollAPortal} />
+
       {/* ==========================================
           SECCIÓN 1: HERO (Apple Style Landing)
           ========================================== */}
       <Box sx={{
-        minHeight: "100vh", display: "flex", flexDirection: "column",
+        minHeight: "calc(100vh - 70px)", display: "flex", flexDirection: "column",
         justifyContent: "space-between", alignItems: "center", p: 4, position: "relative", zIndex: 1
       }}>
-        {/* Barra superior minimalista */}
-        <Box className="slide-from-top" sx={{ display: "flex", width: "100%", maxWidth: 1200, justifyContent: "space-between", alignItems: "center", py: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <img src={uaOriginalLogo} alt="UA Logo" style={{ width: 44, height: "auto", filter: "drop-shadow(0 0 10px rgba(11,117,14,0.3))" }} />
-            <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: "-0.03em", color: "white", fontSize: "1.1rem" }}>
-              UA Incidentes
-            </Typography>
-          </Box>
-          <Button variant="outlined" className="btn-interactive" onClick={scrollAPortal}
-            sx={{ borderColor: "rgba(255,255,255,0.15)", color: "white", borderRadius: 3, px: 3, "&:hover": { borderColor: "#0B750E", bgcolor: "rgba(11,117,14,0.08)" } }}>
-            Acceder
-          </Button>
-        </Box>
 
         {/* Bloque central de presentación */}
         <Box sx={{ textAlign: "center", maxWidth: 850, px: 2, my: "auto" }}>

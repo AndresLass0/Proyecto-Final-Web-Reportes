@@ -1,0 +1,239 @@
+.header__appbar {
+  background: rgba(18, 18, 18, 0.45) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+.header__toolbar {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px !important;
+}
+
+/* Logotipo */
+.header__logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 15px rgba(11, 117, 14, 0.15);
+}
+
+.header__logo-container:hover {
+  transform: rotate(10deg) scale(1.08);
+  box-shadow: 0 0 25px rgba(11, 117, 14, 0.35);
+  border-color: rgba(11, 117, 14, 0.4);
+}
+
+.header__logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Título */
+.header__brand-title {
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  background: linear-gradient(135deg, #ffffff 40%, #a5d6a7 100%);
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  font-size: 1.25rem !important;
+}
+
+/* Botón Navegación Text */
+.header__btn-nav {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 6px 14px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.header__btn-nav:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Botón Outlined */
+.header__btn-outlined {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  padding: 8px 20px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.header__btn-outlined:hover {
+  border-color: #0B750E !important;
+  background: rgba(11, 117, 14, 0.12) !important;
+  box-shadow: 0 4px 15px rgba(11, 117, 14, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Avatar y status pill */
+.header__avatar-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.header__status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #1c1c1f;
+}
+
+.status-user {
+  background-color: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  animation: headerPulseGreen 2.5s infinite;
+}
+
+.status-admin {
+  background-color: #fb7185;
+  box-shadow: 0 0 6px #fb7185;
+  animation: headerPulseRed 2.5s infinite;
+}
+
+@keyframes headerPulseGreen {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  70% { box-shadow: 0 0 0 5px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+@keyframes headerPulseRed {
+  0% { box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.7); }
+  70% { box-shadow: 0 0 0 5px rgba(251, 113, 133, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(251, 113, 133, 0); }
+}
+
+.header__username {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+}
+
+/* Botón cerrar sesión */
+.header__logout-btn {
+  color: rgba(255, 255, 255, 0.65) !important;
+  transition: all 0.3s ease !important;
+}
+
+.header__logout-btn:hover {
+  color: #f87171 !important;
+  background: rgba(248, 113, 113, 0.08) !important;
+  transform: translateX(2px);
+}
+
+/* Campana de Notificaciones */
+.header__bell-btn {
+  color: rgba(255, 255, 255, 0.85) !important;
+  transition: all 0.3s ease !important;
+}
+
+.header__bell-btn:hover {
+  color: #a5d6a7 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Drawer móvil */
+.header__drawer-paper {
+  background: rgba(18, 18, 20, 0.95) !important;
+  backdrop-filter: blur(25px) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  width: 290px;
+}
+
+.header__drawer-title {
+  font-weight: 800 !important;
+  color: white !important;
+  letter-spacing: -0.02em !important;
+}
+
+.header__drawer-logout-btn {
+  background-color: rgba(244, 63, 94, 0.1) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.2) !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  padding: 10px 0 !important;
+  transition: all 0.3s ease !important;
+  margin-top: 20px;
+}
+
+.header__drawer-logout-btn:hover {
+  background-color: #e11d48 !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+}
+
+/* Popover Notificaciones */
+.header__popover-paper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16) !important;
+  border-radius: 16px !important;
+  width: 340px;
+  overflow: hidden !important;
+}
+
+.header__popover-title-bar {
+  padding: 16px;
+  background: #0B750E;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header__notification-item {
+  border-color: rgba(0, 0, 0, 0.04) !important;
+  padding: 14px 16px !important;
+  transition: background-color 0.2s ease;
+}
+
+.header__notification-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.header__notification-more {
+  padding: 12px 16px !important;
+  text-align: center;
+  background-color: rgba(11, 117, 14, 0.02);
+}
+
+.chip-notification-new {
+  background-color: #e8f5e9 !important;
+  color: #0B750E !important;
+  font-weight: 800 !important;
+  font-size: 0.65rem !important;
+  height: 18px !important;
+  border-radius: 6px !important;
+}
+
+.chip-notification-pending {
+  background-color: #fff3e0 !important;
+  color: #e65100 !important;
+  font-weight: 800 !important;
+  font-size: 0.65rem !important;
+  height: 18px !important;
+  border-radius: 6px !important;
+}

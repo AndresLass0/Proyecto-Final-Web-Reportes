@@ -5,19 +5,7 @@ export default function Footer() {
   return (
     <footer className="footer">
 
-      <div className="footer__ua-badge">
-        <div className="footer__ua-dot" />
-        Universidad de la Amazonia — Sistema de Incidentes
-      </div>
 
-      <div className="footer__status">
-        From Wilmer Patiño's Web Class
-      </div>
-
-      <div className="footer__status">
-        Server Status
-        <span className="footer__status-dot" />
-      </div>
 
       <div className="footer__icons">
         {[

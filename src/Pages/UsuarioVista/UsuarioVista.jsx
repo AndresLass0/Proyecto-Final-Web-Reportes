@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { loadGoogleMaps } from "../../utils/googleMaps";
 import FormularioIncidente from "../../components/FormularioIncidente/FormularioIncidente";
 import AnimatedCounter from "../../components/AnimatedCounter";
+import Header from "../../components/Header/Header";
 import {
   Box, Typography, Button, Chip, Card, CardContent,
   TextField, Select, MenuItem, FormControl, InputLabel,
@@ -122,23 +123,7 @@ export default function UsuarioVista() {
       <div className="ambient-glow-2" />
       <div className="ambient-glow-3" />
 
-      {/* AppBar */}
-      <AppBar className="slide-from-top" position="static" sx={{ bgcolor: "rgba(11, 117, 14, 0.15)", backdropFilter: "blur(14px)", borderBottom: "1px solid rgba(255,255,255,0.08)", boxShadow: "none" }}>
-        <Toolbar sx={{ maxWidth: 1200, width: "100%", mx: "auto" }}>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 900, color: "white", letterSpacing: "-0.03em" }}>
-             UA Incidentes
-          </Typography>
-          <Typography variant="body2" sx={{ mr: 2, display: { xs: "none", sm: "block" }, color: "rgba(255,255,255,0.8)" }}>
-            {usuario?.displayName || usuario?.email}
-          </Typography>
-          <Avatar sx={{ bgcolor: "#E81312", mr: 1, width: 36, height: 36, fontSize: 14, fontWeight: "bold", border: "1px solid rgba(255,255,255,0.12)" }}>
-            {(usuario?.displayName || usuario?.email || "U")[0].toUpperCase()}
-          </Avatar>
-          <IconButton color="inherit" onClick={cerrarSesion} title="Cerrar sesión" sx={{ color: "white", "&:hover": { color: "#ef4444" } }}>
-            <Logout />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      <Header tipo="usuario" usuario={usuario} cerrarSesion={cerrarSesion} />
 
       <Box sx={{ maxWidth: 950, mx: "auto", p: { xs: 2, sm: 3 }, position: "relative", zIndex: 1 }}>
         
