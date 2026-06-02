@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../FireBase/config";
 import { useAuth } from "../../context/AuthContext";
 import { subirImagen } from "../../utils/cloudinary";
+import { loadGoogleMaps } from "../../utils/googleMaps";
 import Swal from "sweetalert2";
 import {
   Box, TextField, Button, Typography, Select, MenuItem,
@@ -27,6 +28,59 @@ export default function FormularioIncidente({ onCerrar }) {
   const [cargando, setCargando] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
 
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
+  const markerInstance = useRef(null);
+
+  useEffect(() => {
+    loadGoogleMaps("AIzaSyAch4GiG6bKokBQK-1h4x3N44So0AYfyRw")
+      .then((google) => {
+        if (!mapRef.current) return;
+        const defaultCenter = { lat: 1.6142, lng: -75.6062 }; // Universidad de la Amazonia
+        
+        const mapObj = new google.maps.Map(mapRef.current, {
+          center: defaultCenter,
+          zoom: 16,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+        });
+        
+        const markerObj = new google.maps.Marker({
+          position: defaultCenter,
+          map: mapObj,
+          draggable: true,
+          title: "Ubicación del incidente",
+          animation: google.maps.Animation.DROP
+        });
+
+        mapInstance.current = mapObj;
+        markerInstance.current = markerObj;
+
+        // Establecer latitud y longitud iniciales
+        setLatitud(defaultCenter.lat);
+        setLongitud(defaultCenter.lng);
+
+        // Evento drag del marcador
+        markerObj.addListener("dragend", () => {
+          const pos = markerObj.getPosition();
+          setLatitud(pos.lat());
+          setLongitud(pos.lng());
+        });
+
+        // Evento click en el mapa
+        mapObj.addListener("click", (e) => {
+          const pos = e.latLng;
+          markerObj.setPosition(pos);
+          setLatitud(pos.lat());
+          setLongitud(pos.lng());
+        });
+      })
+      .catch((err) => {
+        console.error("Error al cargar Google Maps:", err);
+      });
+  }, []);
+
   function handleImagen(e) {
     const file = e.target.files[0];
     if (file) { setImagen(file); setPreview(URL.createObjectURL(file)); }
@@ -37,9 +91,17 @@ export default function FormularioIncidente({ onCerrar }) {
     setGeoLoading(true);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setLatitud(pos.coords.latitude);
-        setLongitud(pos.coords.longitude);
-        setUbicacionTexto(`GPS: ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`);
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        setLatitud(lat);
+        setLongitud(lng);
+        
+        if (mapInstance.current && markerInstance.current && window.google) {
+          const newPos = new window.google.maps.LatLng(lat, lng);
+          mapInstance.current.setCenter(newPos);
+          mapInstance.current.setZoom(17);
+          markerInstance.current.setPosition(newPos);
+        }
         setGeoLoading(false);
       },
       () => { Swal.fire({ icon: "error", title: "No se pudo obtener GPS", confirmButtonColor: "#E81312" }); setGeoLoading(false); }
@@ -95,7 +157,15 @@ export default function FormularioIncidente({ onCerrar }) {
                 startIcon={geoLoading ? <CircularProgress size={14} /> : <MyLocation />}
                 sx={{ color: "#0B750E", minWidth: 80 }}>GPS</Button>
             )}} />
-          {latitud && <Chip icon={<LocationOn />} label={`${latitud.toFixed(4)}, ${longitud.toFixed(4)}`} size="small" sx={{ mt: 0.5, bgcolor: "#e8f5e9" }} />}
+          
+          <Box sx={{ mt: 1.5, mb: 1 }}>
+            <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5, fontWeight: "bold" }}>
+              Selecciona la ubicación exacta en el mapa (puedes arrastrar el marcador):
+            </Typography>
+            <div ref={mapRef} style={{ width: "100%", height: "200px", borderRadius: "8px", border: "1px solid #ccc" }} />
+          </Box>
+
+          {latitud && <Chip icon={<LocationOn />} label={`Coordenadas: ${latitud.toFixed(5)}, ${longitud.toFixed(5)}`} size="small" sx={{ mt: 0.5, bgcolor: "#e8f5e9", color: "#0B750E", fontWeight: "bold" }} />}
         </Box>
         <Box>
           <input type="file" accept="image/*" id="img-upload" style={{ display: "none" }} onChange={handleImagen} />

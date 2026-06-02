@@ -1,25 +1,298 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  font-family: 'Roboto', 'Arial', sans-serif;
+  font-family: 'Outfit', 'Roboto', 'Arial', sans-serif;
   background-color: #f5f5f5;
   color: #222222;
 }
 
+/* ----------------------------------------------------
+   UA Incidentes - Sistema de Animaciones y Estilos Premium (Rich Aesthetics)
+   ---------------------------------------------------- */
+
+/* Animación de Entrada General (Slide-up Fade-in elástica) */
+@keyframes slideUpIn {
+  from {
+    transform: translateY(28px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up-in {
+  animation: slideUpIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Animaciones de Transición Lateral Premium (Navegación de Autenticación) */
+@keyframes slideFromRight {
+  from {
+    transform: translateX(45px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-from-right {
+  animation: slideFromRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideFromLeft {
+  from {
+    transform: translateX(-45px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-from-left {
+  animation: slideFromLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideFromTop {
+  from {
+    transform: translateY(-35px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-from-top {
+  animation: slideFromTop 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.scale-in {
+  animation: scaleIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Retrasos de Animación Secuenciales (Staggered load) */
+.stagger-1 {
+  animation-delay: 0.04s;
+}
+
+.stagger-2 {
+  animation-delay: 0.08s;
+}
+
+.stagger-3 {
+  animation-delay: 0.12s;
+}
+
+.stagger-4 {
+  animation-delay: 0.16s;
+}
+
+.stagger-5 {
+  animation-delay: 0.20s;
+}
+
+.stagger-6 {
+  animation-delay: 0.24s;
+}
+
+/* Fondo con Degradado Fluido y Dinámico */
+@keyframes flowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.flow-gradient-bg {
+  background: linear-gradient(-45deg, #0B750E, #053b07, #135d16, #121212, #222222);
+  background-size: 400% 400%;
+  animation: flowGradient 18s ease infinite;
+}
+
+/* Efecto Glassmorphism Premium */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Física Hover 3D en Tarjetas de Incidentes */
+.hover-card-premium {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s ease !important;
+}
+
+.hover-card-premium:hover {
+  transform: translateY(-5px) scale(1.015) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06) !important;
+  z-index: 10;
+}
+
+/* Variantes de hover según el color de estado */
+.hover-card-reportado {
+  border-left: 4px solid #E81312 !important;
+}
+
+.hover-card-reportado:hover {
+  box-shadow: 0 12px 28px rgba(232, 19, 18, 0.12) !important;
+  border-color: rgba(232, 19, 18, 0.3) !important;
+}
+
+.hover-card-proceso {
+  border-left: 4px solid #E47113 !important;
+}
+
+.hover-card-proceso:hover {
+  box-shadow: 0 12px 28px rgba(228, 113, 19, 0.12) !important;
+  border-color: rgba(228, 113, 19, 0.3) !important;
+}
+
+.hover-card-resuelto {
+  border-left: 4px solid #0B750E !important;
+}
+
+.hover-card-resuelto:hover {
+  box-shadow: 0 12px 28px rgba(11, 117, 14, 0.12) !important;
+  border-color: rgba(11, 117, 14, 0.3) !important;
+}
+
+/* Micro-Indicadores LED Pulsantes */
+.led-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  position: relative;
+  vertical-align: middle;
+}
+
+@keyframes pulseRed {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 19, 18, 0.8);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(232, 19, 18, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 19, 18, 0);
+  }
+}
+
+.led-red {
+  background-color: #E81312;
+  animation: pulseRed 2s infinite;
+}
+
+@keyframes pulseOrange {
+  0% {
+    box-shadow: 0 0 0 0 rgba(228, 113, 19, 0.8);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(228, 113, 19, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(228, 113, 19, 0);
+  }
+}
+
+.led-orange {
+  background-color: #E47113;
+  animation: pulseOrange 2s infinite;
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(11, 117, 14, 0.6);
+  }
+
+  70% {
+    box-shadow: 0 0 0 5px rgba(11, 117, 14, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(11, 117, 14, 0);
+  }
+}
+
+.led-green {
+  background-color: #0B750E;
+  animation: pulseGreen 2.5s infinite;
+}
+
+/* Efecto hover suave general para botones interactivos */
+.btn-interactive {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.btn-interactive:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.btn-interactive:active {
+  transform: translateY(1px);
+}
+
 @media print {
-  body * { visibility: hidden; }
+  body * {
+    visibility: hidden;
+  }
 
   .estadisticas-print,
-  .estadisticas-print * { visibility: visible; }
+  .estadisticas-print * {
+    visibility: visible;
+  }
 
   .estadisticas-print {
     position: absolute;
-    left: 0; top: 0;
+    left: 0;
+    top: 0;
     width: 100%;
     padding: 24px;
   }
 
-  .no-print { display: none !important; }
+  .no-print {
+    display: none !important;
+  }
 
   .estadisticas-print .MuiCard-root {
     break-inside: avoid;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { getDoc, doc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../FireBase/config";
 import Swal from "sweetalert2";
 import {
@@ -40,56 +40,52 @@ export default function Home() {
 
   async function handleGoogle() {
     try {
-      const user = await iniciarSesionGoogle();
-      const snap = await getDoc(doc(db, "usuarios", user.uid));
-      const rol = snap.data()?.rol;
-      await Swal.fire({ icon: "success", title: "¡Bienvenido!", text: `Hola ${user.displayName}`, timer: 1500, showConfirmButton: false });
+      const { user, rol } = await iniciarSesionGoogle();
+      await Swal.fire({ icon: "success", title: "¡Bienvenido!", text: `Hola ${user.displayName || user.email}`, timer: 1500, showConfirmButton: false });
       navigate(rol === "administrador" ? "/admin" : "/usuario");
     } catch (err) {
+      console.error(err);
       Swal.fire({ icon: "error", title: "Error", text: "No se pudo iniciar sesión con Google", confirmButtonColor: "#E81312" });
     }
-  }
-
-  return (
-    <Box sx={{
+  }  return (
+    <Box className="flow-gradient-bg" sx={{
       minHeight: "100vh", display: "flex",
-      background: "linear-gradient(135deg, #0B750E 0%, #064d08 50%, #1a1a1a 100%)",
     }}>
-      <Box sx={{
+      <Box className="slide-up-in stagger-1" sx={{
         flex: 1, display: { xs: "none", md: "flex" },
         flexDirection: "column", alignItems: "center", justifyContent: "center",
         p: 6, color: "white"
       }}>
         <Box sx={{ mb: 3 }}>
           <svg width="120" height="100" viewBox="0 0 120 100">
-            <text x="5" y="80" fontSize="75" fontFamily="serif" fontWeight="bold" fill="#ffffff" opacity="0.9">UA</text>
+            <text x="5" y="80" fontSize="75" fontFamily="Outfit, sans-serif" fontWeight="bold" fill="#ffffff" opacity="0.9">UA</text>
             <ellipse cx="95" cy="18" rx="20" ry="9" fill="#E81312" opacity="0.9"/>
             <circle cx="76" cy="22" r="5" fill="none" stroke="#E81312" strokeWidth="2"/>
           </svg>
         </Box>
-        <Typography variant="h4" fontFamily="Georgia, serif" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
+        <Typography variant="h4" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
           Universidad de la Amazonia
         </Typography>
-        <Typography variant="h6" sx={{ opacity: 0.8, textAlign: "center", maxWidth: 300 }}>
+        <Typography variant="h6" sx={{ opacity: 0.8, textAlign: "center", maxWidth: 320 }}>
           Sistema de Reporte de Incidentes Institucionales
         </Typography>
         <Box sx={{ mt: 4, display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
           {["💧 Fugas de agua", "⚡ Problemas eléctricos", "🏗️ Infraestructura", "🔒 Seguridad"].map(t => (
-            <Box key={t} sx={{ bgcolor: "rgba(255,255,255,0.15)", borderRadius: 2, px: 2, py: 1, fontSize: "0.85rem" }}>{t}</Box>
+            <Box key={t} sx={{ bgcolor: "rgba(255,255,255,0.12)", backdropFilter: "blur(4px)", borderRadius: 2, px: 2, py: 1, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.15)", transition: "transform 0.2s", "&:hover": { transform: "translateY(-2px)" } }}>{t}</Box>
           ))}
         </Box>
       </Box>
-
-      <Box sx={{ width: { xs: "100%", md: 480 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "#fafafa", p: 4 }}>
-        <Paper elevation={0} sx={{ width: "100%", maxWidth: 380, p: 4 }}>
+ 
+      <Box sx={{ width: { xs: "100%", md: 480 }, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "rgba(0,0,0,0.15)", backdropFilter: "blur(10px)", borderLeft: "1px solid rgba(255,255,255,0.08)", p: 4 }}>
+        <Paper className="glass-panel slide-from-left stagger-1" elevation={4} sx={{ width: "100%", maxWidth: 380, p: 4, borderRadius: 4 }}>
           <Box sx={{ textAlign: "center", mb: 4 }}>
-            <Box sx={{ width: 64, height: 64, borderRadius: "50%", bgcolor: "#0B750E", display: "inline-flex", alignItems: "center", justifyContent: "center", mb: 2 }}>
-              <Typography sx={{ color: "white", fontWeight: "bold", fontSize: 22, fontFamily: "serif" }}>UA</Typography>
+            <Box sx={{ width: 64, height: 64, borderRadius: "50%", bgcolor: "#0B750E", display: "inline-flex", alignItems: "center", justifyContent: "center", mb: 2, boxShadow: "0 4px 14px rgba(11, 117, 14, 0.4)" }}>
+              <Typography sx={{ color: "white", fontWeight: "bold", fontSize: 22 }}>UA</Typography>
             </Box>
             <Typography variant="h5" fontWeight="bold" color="#222222">Iniciar Sesión</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Ingresa con tu cuenta institucional</Typography>
           </Box>
-
+ 
           <Box component="form" onSubmit={handleLogin} sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
             <TextField
               label="Correo electrónico" type="email" value={correo}
@@ -112,16 +108,16 @@ export default function Home() {
               }}
               sx={{ "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#0B750E" } }}
             />
-            <Button type="submit" variant="contained" fullWidth disabled={cargando}
-              sx={{ bgcolor: "#0B750E", py: 1.5, fontSize: "1rem", "&:hover": { bgcolor: "#064d08" }, borderRadius: 2 }}>
+            <Button type="submit" variant="contained" fullWidth disabled={cargando} className="btn-interactive"
+              sx={{ bgcolor: "#0B750E", py: 1.5, fontSize: "1rem", "&:hover": { bgcolor: "#064d08" }, borderRadius: 2, boxShadow: "0 4px 12px rgba(11, 117, 14, 0.3)" }}>
               {cargando ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Ingresar"}
             </Button>
           </Box>
-
-          <Divider sx={{ my: 2 }}>o</Divider>
-
+ 
+          <Divider sx={{ my: 2, "&::before, &::after": { borderColor: "rgba(0,0,0,0.12)" } }}>o</Divider>
+ 
           <Button
-            variant="outlined" fullWidth onClick={handleGoogle}
+            variant="outlined" fullWidth onClick={handleGoogle} className="btn-interactive"
             startIcon={
               <svg width="18" height="18" viewBox="0 0 18 18">
                 <path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/>
@@ -130,11 +126,11 @@ export default function Home() {
                 <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/>
               </svg>
             }
-            sx={{ borderColor: "#ddd", color: "#444", "&:hover": { borderColor: "#bbb", bgcolor: "#f9f9f9" }, borderRadius: 2, py: 1.2 }}
+            sx={{ borderColor: "rgba(0,0,0,0.15)", color: "#444", "&:hover": { borderColor: "rgba(0,0,0,0.25)", bgcolor: "rgba(0,0,0,0.02)" }, borderRadius: 2, py: 1.2 }}
           >
             Continuar con Google
           </Button>
-
+ 
           <Typography variant="body2" textAlign="center" sx={{ mt: 3, color: "text.secondary" }}>
             ¿No tienes cuenta?{" "}
             <Link to="/register" style={{ color: "#0B750E", fontWeight: "bold", textDecoration: "none" }}>Regístrate aquí</Link>

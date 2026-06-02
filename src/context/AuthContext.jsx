@@ -40,17 +40,25 @@ export function AuthProvider({ children }) {
     const provider = new GoogleAuthProvider();
     const credencial = await signInWithPopup(auth, provider);
     const user = credencial.user;
-    const snap = await getDoc(doc(db, "usuarios", user.uid));
+    
+    // Garantizar que el documento exista antes de retornar
+    let snap = await getDoc(doc(db, "usuarios", user.uid));
+    let userRol = "usuario";
     if (!snap.exists()) {
       await setDoc(doc(db, "usuarios", user.uid), {
         uid: user.uid,
         nombre: user.displayName || "Usuario Google",
-        correo: user.email,
+        correo: user.email || "",
         rol: "usuario",
         fechaCreacion: new Date().toISOString(),
       });
+    } else {
+      userRol = snap.data().rol;
     }
-    return user;
+    
+    setUsuario(user);
+    setRol(userRol);
+    return { user, rol: userRol };
   }
 
   async function cerrarSesion() {
@@ -61,8 +69,24 @@ export function AuthProvider({ children }) {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUsuario(user);
-        const snap = await getDoc(doc(db, "usuarios", user.uid));
-        if (snap.exists()) setRol(snap.data().rol);
+        let snap = await getDoc(doc(db, "usuarios", user.uid));
+        if (!snap.exists()) {
+          const esGoogle = user.providerData.some(p => p.providerId === "google.com");
+          if (esGoogle) {
+            await setDoc(doc(db, "usuarios", user.uid), {
+              uid: user.uid,
+              nombre: user.displayName || "Usuario Google",
+              correo: user.email || "",
+              rol: "usuario",
+              fechaCreacion: new Date().toISOString(),
+            });
+            setRol("usuario");
+          } else {
+            setRol("usuario"); // Fallback temporal para otros
+          }
+        } else {
+          setRol(snap.data().rol);
+        }
       } else {
         setUsuario(null);
         setRol(null);
