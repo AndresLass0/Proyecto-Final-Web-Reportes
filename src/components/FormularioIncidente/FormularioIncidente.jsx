@@ -44,6 +44,13 @@ export default function FormularioIncidente({ onCerrar }) {
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
+          styles: [
+            { elementType: "geometry", stylers: [{ color: "#1d2c4d" }] },
+            { elementType: "labels.text.fill", stylers: [{ color: "#8ec3b9" }] },
+            { elementType: "labels.text.stroke", stylers: [{ color: "#1a3646" }] },
+            { featureType: "administrative.country", elementType: "geometry.stroke", stylers: [{ color: "#4b6878" }] },
+            { featureType: "water", elementType: "geometry", stylers: [{ color: "#0e1626" }] }
+          ]
         });
         
         const markerObj = new google.maps.Marker({
@@ -87,7 +94,7 @@ export default function FormularioIncidente({ onCerrar }) {
   }
 
   function obtenerGPS() {
-    if (!navigator.geolocation) { Swal.fire({ icon: "warning", title: "GPS no disponible", confirmButtonColor: "#0B750E" }); return; }
+    if (!navigator.geolocation) { Swal.fire({ icon: "warning", title: "GPS no disponible", confirmButtonColor: "#10b981" }); return; }
     setGeoLoading(true);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -104,14 +111,14 @@ export default function FormularioIncidente({ onCerrar }) {
         }
         setGeoLoading(false);
       },
-      () => { Swal.fire({ icon: "error", title: "No se pudo obtener GPS", confirmButtonColor: "#E81312" }); setGeoLoading(false); }
+      () => { Swal.fire({ icon: "error", title: "No se pudo obtener GPS", confirmButtonColor: "#ef4444" }); setGeoLoading(false); }
     );
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!tipo || !descripcion || !ubicacionTexto || !imagen) {
-      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Tipo, descripción, ubicación e imagen son obligatorios", confirmButtonColor: "#0B750E" });
+      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Tipo, descripción, ubicación e imagen son obligatorios", confirmButtonColor: "#10b981" });
       return;
     }
     setCargando(true);
@@ -130,63 +137,100 @@ export default function FormularioIncidente({ onCerrar }) {
       await Swal.fire({ icon: "success", title: "¡Incidente registrado!", text: "Tu reporte fue enviado exitosamente.", timer: 1800, showConfirmButton: false });
       onCerrar && onCerrar();
     } catch (err) {
-      Swal.fire({ icon: "error", title: "Error al registrar", text: err.message, confirmButtonColor: "#E81312" });
+      Swal.fire({ icon: "error", title: "Error al registrar", text: err.message, confirmButtonColor: "#ef4444" });
     } finally {
       setCargando(false);
     }
   }
 
+  const fieldSx = {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: "rgba(255, 255, 255, 0.08)" },
+      "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.2)" },
+      "&.Mui-focused fieldset": { borderColor: "#10b981" },
+    }
+  };
+
   return (
-    <Paper sx={{ p: 3, borderRadius: 3 }}>
-      <Typography variant="h6" fontWeight="bold" sx={{ mb: 2, color: "#0B750E", display: "flex", alignItems: "center", gap: 1 }}><Assignment />Nuevo Incidente</Typography>
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <FormControl fullWidth>
-          <InputLabel>Tipo de incidente</InputLabel>
-          <Select value={tipo} onChange={e => setTipo(e.target.value)} label="Tipo de incidente">
-            {TIPOS.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
-          </Select>
-        </FormControl>
-        <TextField label="Descripción detallada" multiline rows={3} value={descripcion}
-          onChange={e => setDescripcion(e.target.value)} fullWidth inputProps={{ maxLength: 500 }}
-          helperText={`${descripcion.length}/500`} />
-        <Box>
-          <TextField label="Ubicación (ej: Bloque A, Baño 2do piso)" value={ubicacionTexto}
-            onChange={e => setUbicacionTexto(e.target.value)} fullWidth
-            InputProps={{ endAdornment: (
+    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2.5, bgcolor: "transparent" }}>
+      
+      <FormControl fullWidth sx={fieldSx}>
+        <InputLabel sx={{ color: "rgba(255,255,255,0.4)" }}>Tipo de incidente</InputLabel>
+        <Select value={tipo} onChange={e => setTipo(e.target.value)} label="Tipo de incidente" sx={{ color: "white" }}>
+          {TIPOS.map(t => <MenuItem key={t} value={t}>{t}</MenuItem>)}
+        </Select>
+      </FormControl>
+
+      <TextField
+        label="Descripción detallada" multiline rows={3} value={descripcion}
+        onChange={e => setDescripcion(e.target.value)} fullWidth inputProps={{ maxLength: 500 }}
+        helperText={<Typography variant="caption" sx={{ color: "rgba(255,255,255,0.3)" }}>{`${descripcion.length}/500`}</Typography>}
+        sx={fieldSx}
+      />
+
+      <Box>
+        <TextField
+          label="Ubicación (ej: Bloque A, Baño 2do piso)" value={ubicacionTexto}
+          onChange={e => setUbicacionTexto(e.target.value)} fullWidth sx={fieldSx}
+          InputProps={{
+            endAdornment: (
               <Button size="small" onClick={obtenerGPS} disabled={geoLoading}
                 startIcon={geoLoading ? <CircularProgress size={14} /> : <MyLocation />}
-                sx={{ color: "#0B750E", minWidth: 80 }}>GPS</Button>
-            )}} />
-          
-          <Box sx={{ mt: 1.5, mb: 1 }}>
-            <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 0.5, fontWeight: "bold" }}>
-              Selecciona la ubicación exacta en el mapa (puedes arrastrar el marcador):
-            </Typography>
-            <div ref={mapRef} style={{ width: "100%", height: "200px", borderRadius: "8px", border: "1px solid #ccc" }} />
-          </Box>
+                sx={{ color: "#10b981", minWidth: 80, fontWeight: "bold" }}>GPS</Button>
+            )
+          }}
+        />
+        
+        <Box sx={{ mt: 2, mb: 1.5 }}>
+          <Typography variant="caption" sx={{ mb: 1, fontWeight: "bold", color: "rgba(255,255,255,0.5)", display: "block" }}>
+            Selecciona la ubicación exacta en el mapa (puedes arrastrar el marcador):
+          </Typography>
+          <div ref={mapRef} style={{ width: "100%", height: "200px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }} />
+        </Box>
 
-          {latitud && <Chip icon={<LocationOn />} label={`Coordenadas: ${latitud.toFixed(5)}, ${longitud.toFixed(5)}`} size="small" sx={{ mt: 0.5, bgcolor: "#e8f5e9", color: "#0B750E", fontWeight: "bold" }} />}
-        </Box>
-        <Box>
-          <input type="file" accept="image/*" id="img-upload" style={{ display: "none" }} onChange={handleImagen} />
-          <label htmlFor="img-upload">
-            <Button component="span" variant="outlined" startIcon={<CloudUpload />} fullWidth
-              sx={{ borderColor: "#0B750E", color: "#0B750E", py: 1.5, borderStyle: "dashed" }}>
-              {imagen ? imagen.name : "Subir fotografía (obligatorio)"}
-            </Button>
-          </label>
-          {preview && <Box sx={{ mt: 1, borderRadius: 2, overflow: "hidden", maxHeight: 200 }}>
-            <img src={preview} alt="preview" style={{ width: "100%", objectFit: "cover", maxHeight: 200 }} />
-          </Box>}
-        </Box>
-        <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
-          <Button variant="outlined" fullWidth onClick={onCerrar} sx={{ borderColor: "#ccc", color: "#666" }}>Cancelar</Button>
-          <Button type="submit" variant="contained" fullWidth disabled={cargando}
-            sx={{ bgcolor: "#0B750E", "&:hover": { bgcolor: "#064d08" } }}>
-            {cargando ? <CircularProgress size={22} sx={{ color: "white" }} /> : "Reportar Incidente"}
-          </Button>
-        </Box>
+        {latitud && (
+          <Chip
+            icon={<LocationOn sx={{ color: "#10b981 !important" }} />}
+            label={`Coordenadas: ${latitud.toFixed(5)}, ${longitud.toFixed(5)}`}
+            size="small"
+            sx={{
+              mt: 0.5, bgcolor: "rgba(16, 185, 129, 0.12)", color: "#10b981", fontWeight: "bold",
+              border: "1px solid rgba(16, 185, 129, 0.25)"
+            }}
+          />
+        )}
       </Box>
-    </Paper>
+
+      <Box>
+        <input type="file" accept="image/*" id="img-upload" style={{ display: "none" }} onChange={handleImagen} />
+        <label htmlFor="img-upload">
+          <Button component="span" variant="outlined" startIcon={<CloudUpload />} fullWidth className="btn-interactive"
+            sx={{
+              borderColor: "rgba(16, 185, 129, 0.4)", color: "#10b981", py: 1.8, borderStyle: "dashed", borderRadius: 3,
+              bgcolor: "rgba(16, 185, 129, 0.03)",
+              "&:hover": { borderColor: "#10b981", bgcolor: "rgba(16, 185, 129, 0.08)" }
+            }}>
+            {imagen ? imagen.name : "Subir fotografía (obligatorio)"}
+          </Button>
+        </label>
+        {preview && (
+          <Box sx={{ mt: 1.5, borderRadius: 3, overflow: "hidden", maxHeight: 200, border: "1px solid rgba(255,255,255,0.08)" }}>
+            <img src={preview} alt="preview" style={{ width: "100%", objectFit: "cover", maxHeight: 200 }} />
+          </Box>
+        )}
+      </Box>
+
+      <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
+        <Button variant="outlined" fullWidth onClick={onCerrar} className="btn-interactive"
+          sx={{ borderColor: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.6)", borderRadius: 3, py: 1.2, "&:hover": { borderColor: "white", bgcolor: "rgba(255,255,255,0.03)" } }}>
+          Cancelar
+        </Button>
+        <Button type="submit" variant="contained" fullWidth disabled={cargando} className="btn-interactive"
+          sx={{ bgcolor: "#10b981", "&:hover": { bgcolor: "#059669" }, borderRadius: 3, py: 1.2, fontWeight: "bold", boxShadow: "0 6px 15px rgba(16, 185, 129, 0.35)" }}>
+          {cargando ? <CircularProgress size={22} sx={{ color: "white" }} /> : "Reportar Incidente"}
+        </Button>
+      </Box>
+
+    </Box>
   );
 }

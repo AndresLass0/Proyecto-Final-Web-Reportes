@@ -23,15 +23,15 @@ export default function Register() {
   async function handleRegister(e) {
     e.preventDefault();
     if (!nombre || !correo || !password || !confirmar) {
-      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Todos los campos son obligatorios", confirmButtonColor: "#0B750E" });
+      Swal.fire({ icon: "warning", title: "Campos incompletos", text: "Todos los campos son obligatorios", confirmButtonColor: "#10b981" });
       return;
     }
     if (password !== confirmar) {
-      Swal.fire({ icon: "warning", title: "Contraseñas distintas", text: "Las contraseñas no coinciden", confirmButtonColor: "#0B750E" });
+      Swal.fire({ icon: "warning", title: "Contraseñas distintas", text: "Las contraseñas no coinciden", confirmButtonColor: "#10b981" });
       return;
     }
     if (password.length < 6) {
-      Swal.fire({ icon: "warning", title: "Contraseña muy corta", text: "Debe tener al menos 6 caracteres", confirmButtonColor: "#0B750E" });
+      Swal.fire({ icon: "warning", title: "Contraseña muy corta", text: "Debe tener al menos 6 caracteres", confirmButtonColor: "#10b981" });
       return;
     }
     setCargando(true);
@@ -41,7 +41,7 @@ export default function Register() {
         icon: "success",
         title: "¡Cuenta creada!",
         text: "Tu cuenta fue creada exitosamente. Ahora inicia sesión.",
-        confirmButtonColor: "#0B750E",
+        confirmButtonColor: "#10b981",
         confirmButtonText: "Ir al login"
       });
       navigate("/");
@@ -49,7 +49,7 @@ export default function Register() {
       const msg = err.code === "auth/email-already-in-use"
         ? "Este correo ya está registrado"
         : "Error al registrar. Intenta de nuevo.";
-      Swal.fire({ icon: "error", title: "Error de registro", text: msg, confirmButtonColor: "#E81312" });
+      Swal.fire({ icon: "error", title: "Error de registro", text: msg, confirmButtonColor: "#ef4444" });
     } finally {
       setCargando(false);
     }
@@ -62,52 +62,75 @@ export default function Register() {
       navigate(rol === "administrador" ? "/admin" : "/usuario");
     } catch (err) {
       console.error(err);
-      Swal.fire({ icon: "error", title: "Error", text: "No se pudo registrar con Google", confirmButtonColor: "#E81312" });
+      Swal.fire({ icon: "error", title: "Error", text: "No se pudo registrar con Google", confirmButtonColor: "#ef4444" });
     }
   }
 
-  const fieldSx = { "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#0B750E" } };
+  const fieldSx = {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: "rgba(255, 255, 255, 0.1)" },
+      "&:hover fieldset": { borderColor: "rgba(255, 255, 255, 0.25)" },
+      "&.Mui-focused fieldset": { borderColor: "#10b981" },
+    }
+  };
 
   return (
-    <Box className="flow-gradient-bg" sx={{
-      minHeight: "100vh", display: "flex",
-      alignItems: "center", justifyContent: "center", p: 2
+    <Box sx={{
+      minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
+      bgcolor: "#08090d", p: 2, position: "relative", overflow: "hidden"
     }}>
-      <Paper className="glass-panel slide-from-right stagger-1" elevation={4} sx={{ width: "100%", maxWidth: 420, p: 4, borderRadius: 4 }}>
-        <Box sx={{ textAlign: "center", mb: 3 }}>
-          <Box sx={{ mb: 2 }}>
-            <img src={uaNegroLogo} alt="UA Logo" style={{ width: 110, height: "auto" }} />
+      {/* Luces flotantes ambientales de fondo */}
+      <div className="ambient-glow-1" />
+      <div className="ambient-glow-2" />
+      <div className="ambient-glow-3" />
+
+      <Paper
+        className="glass-panel slide-from-right stagger-1"
+        elevation={0}
+        sx={{
+          width: "100%", maxWidth: 440, p: { xs: 4, sm: 5 }, borderRadius: 6,
+          border: "1px solid rgba(255,255,255,0.1) !important",
+          background: "rgba(10, 11, 16, 0.72) !important",
+          boxShadow: "0 30px 70px rgba(0,0,0,0.55) !important",
+          position: "relative", zIndex: 1
+        }}
+      >
+        <Box sx={{ textAlign: "center", mb: 3.5 }}>
+          <Box sx={{ mb: 2, display: "inline-flex", p: 1.5, bgcolor: "rgba(16,185,129,0.08)", borderRadius: "20px" }}>
+            <img src={uaNegroLogo} alt="UA Logo" style={{ width: 80, height: "auto", filter: "invert(1) brightness(2)" }} />
           </Box>
-          <Typography variant="h5" fontWeight="bold" color="#222222">Crear Cuenta</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>Universidad de la Amazonia</Typography>
+          <Typography variant="h5" fontWeight="bold" sx={{ color: "white", letterSpacing: "-0.01em" }}>Crear Cuenta</Typography>
+          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.5)", mt: 0.5 }}>Universidad de la Amazonia</Typography>
         </Box>
 
-        <Box component="form" onSubmit={handleRegister} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box component="form" onSubmit={handleRegister} sx={{ display: "flex", flexDirection: "column", gap: 2.2 }}>
           <TextField label="Nombre completo" value={nombre} onChange={e => setNombre(e.target.value)} fullWidth
-            InputProps={{ startAdornment: <InputAdornment position="start"><PersonOutlined sx={{ color: "#0B750E" }} /></InputAdornment> }} sx={fieldSx} />
+            InputProps={{ startAdornment: <InputAdornment position="start"><PersonOutlined sx={{ color: "#10b981" }} /></InputAdornment> }} sx={fieldSx} />
 
           <TextField label="Correo electrónico" type="email" value={correo} onChange={e => setCorreo(e.target.value)} fullWidth
-            InputProps={{ startAdornment: <InputAdornment position="start"><EmailOutlined sx={{ color: "#0B750E" }} /></InputAdornment> }} sx={fieldSx} />
+            InputProps={{ startAdornment: <InputAdornment position="start"><EmailOutlined sx={{ color: "#10b981" }} /></InputAdornment> }} sx={fieldSx} />
 
           <TextField label="Contraseña" type={mostrarPass ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} fullWidth
             InputProps={{
-              startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#0B750E" }} /></InputAdornment>,
-              endAdornment: <InputAdornment position="end"><IconButton onClick={() => setMostrarPass(!mostrarPass)} size="small">{mostrarPass ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>
+              startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#10b981" }} /></InputAdornment>,
+              endAdornment: <InputAdornment position="end"><IconButton onClick={() => setMostrarPass(!mostrarPass)} size="small" sx={{ color: "rgba(255,255,255,0.4)" }}>{mostrarPass ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>
             }} sx={fieldSx} />
 
           <TextField label="Confirmar contraseña" type={mostrarConfirmar ? "text" : "password"} value={confirmar} onChange={e => setConfirmar(e.target.value)} fullWidth
             InputProps={{
-              startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#0B750E" }} /></InputAdornment>,
-              endAdornment: <InputAdornment position="end"><IconButton onClick={() => setMostrarConfirmar(!mostrarConfirmar)} size="small">{mostrarConfirmar ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>
+              startAdornment: <InputAdornment position="start"><LockOutlined sx={{ color: "#10b981" }} /></InputAdornment>,
+              endAdornment: <InputAdornment position="end"><IconButton onClick={() => setMostrarConfirmar(!mostrarConfirmar)} size="small" sx={{ color: "rgba(255,255,255,0.4)" }}>{mostrarConfirmar ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>
             }} sx={fieldSx} />
 
           <Button type="submit" variant="contained" fullWidth disabled={cargando} className="btn-interactive"
-            sx={{ bgcolor: "#0B750E", py: 1.5, fontSize: "1rem", "&:hover": { bgcolor: "#064d08" }, borderRadius: 2, mt: 1, boxShadow: "0 4px 12px rgba(11, 117, 14, 0.3)" }}>
+            sx={{ bgcolor: "#10b981", py: 1.6, fontSize: "1rem", fontWeight: "bold", "&:hover": { bgcolor: "#059669" }, borderRadius: 3, mt: 1, boxShadow: "0 8px 24px rgba(16, 185, 129, 0.3)" }}>
             {cargando ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Registrarse"}
           </Button>
         </Box>
 
-        <Divider sx={{ my: 2, "&::before, &::after": { borderColor: "rgba(0,0,0,0.12)" } }}>o</Divider>
+        <Divider sx={{ my: 3, "&::before, &::after": { borderColor: "rgba(255,255,255,0.08)" } }}>
+          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.3)" }}>o registrarse con</Typography>
+        </Divider>
 
         <Button
           variant="outlined" fullWidth onClick={handleGoogle} className="btn-interactive"
@@ -119,14 +142,17 @@ export default function Register() {
               <path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/>
             </svg>
           }
-          sx={{ borderColor: "rgba(0,0,0,0.15)", color: "#444", "&:hover": { borderColor: "rgba(0,0,0,0.25)", bgcolor: "rgba(0,0,0,0.02)" }, borderRadius: 2, py: 1.2, mb: 1 }}
+          sx={{
+            borderColor: "rgba(255,255,255,0.12)", color: "white", borderRadius: 3, py: 1.4, mb: 1,
+            "&:hover": { borderColor: "rgba(255,255,255,0.3)", bgcolor: "rgba(255,255,255,0.03)" }
+          }}
         >
-          Registrarse con Google
+          Google
         </Button>
 
-        <Typography variant="body2" textAlign="center" sx={{ mt: 2, color: "text.secondary" }}>
-          ¿Ya tienes cuenta?{" "}
-          <Link to="/" style={{ color: "#0B750E", fontWeight: "bold", textDecoration: "none" }}>Inicia sesión</Link>
+        <Typography variant="body2" textAlign="center" sx={{ mt: 3, color: "rgba(255,255,255,0.5)" }}>
+          ¿Ya tienes una cuenta?{" "}
+          <Link to="/" style={{ color: "#10b981", fontWeight: "bold", textDecoration: "none" }}>Inicia sesión</Link>
         </Typography>
       </Paper>
     </Box>
